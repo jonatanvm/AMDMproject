@@ -20,10 +20,11 @@ def read_graph(file_name):
             degrees[v0] += 1
             degrees[v1] += 1
             matrix[v0][v1] += 1
-            n_lines += 1
+            matrix[v1][v0] += 1
+            n_lines += 2
 
         assert np.sum(matrix) == n_lines  # Check all lines read
-        return matrix, np.diag(degrees)
+        return matrix, np.diag(degrees), int(k)
 
 
 def unnormalized_laplacian(D, A):
@@ -37,7 +38,7 @@ def normalized_laplacian(D, A):
 
 files = ['ca-AstroPh.txt', 'ca-CondMat.txt', 'ca-GrQc.txt', 'ca-HepPh.txt', 'ca-HepTh.txt']
 
-A, D = read_graph(files[4])
+A, D, k = read_graph(files[4])
 print(np.sum(D, axis=0))
 # Calculate laplacian matrix
 laplacian_matrix = normalized_laplacian(D, A)
@@ -50,4 +51,7 @@ e_values, e_vectors = eig(laplacian_matrix)
 laplacian_matrix = None  # Free memory
 X = np.real(e_vectors)
 
+
 # TODO: compute the first k eigenvectors u1, . . . , uk of L
+index_k = np.argsort(e_values)[k-1]
+partition = [val >= 0 for val in e_vectors[:, index_k]]
