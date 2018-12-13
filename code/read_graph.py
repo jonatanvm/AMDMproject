@@ -7,7 +7,7 @@ from scipy import linalg
 
 def read_graph(file_name):
     with open('../graphs/' + file_name, 'r') as graph:
-        _, name, nVertices, nEdges = graph.readline().split(" ")
+        _, name, nVertices, nEdges, k = graph.readline().split(" ")
         matrix = np.zeros([int(nVertices), int(nVertices)])  # slower than empty
         degrees = np.zeros(int(nVertices))
         n_lines = 0
