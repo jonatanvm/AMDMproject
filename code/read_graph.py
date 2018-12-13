@@ -30,11 +30,17 @@ def unnormalized_laplacian(D, A):
     return D - A
 
 
+def normalized_laplacian(D, A):
+    inv_sqrt = np.divide(1, np.sqrt(D), where=D != 0)
+    return np.eye(D.shape[0]) - np.dot(np.dot(inv_sqrt, A), inv_sqrt)
+
+
 files = ['ca-AstroPh.txt', 'ca-CondMat.txt', 'ca-GrQc.txt', 'ca-HepPh.txt', 'ca-HepTh.txt']
 
-A, D = read_graph(files[3])
+A, D = read_graph(files[4])
+print(np.sum(D, axis=0))
 # Calculate laplacian matrix
-laplacian_matrix = unnormalized_laplacian(D, A)
+laplacian_matrix = normalized_laplacian(D, A)
 print(laplacian_matrix)
 D = None  # Free memory
 A = None  # Free memory
