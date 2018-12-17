@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
 
 
 def read_graph_sparse(loc, file_name):
-    #https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html#scipy.sparse.coo_matrix
-    #https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.sparse.linalg.eigs.html#scipy.sparse.linalg.eigs
+    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html#scipy.sparse.coo_matrix
+    # https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.sparse.linalg.eigs.html#scipy.sparse.linalg.eigs
     with open(loc + file_name, 'r') as graph:
         line = graph.readline().split(" ")
         k = None
@@ -51,7 +51,6 @@ def read_graph(loc, file_name):
         except ValueError:
             _, name, nVertices, nEdges, k = line
         header = ['#', str(name), str(nVertices), str(nEdges), str(k)]
-        print(header)
         matrix = np.zeros([int(nVertices), int(nVertices)])  # slower than empty
         degrees = np.zeros(int(nVertices))
         n_lines = 0
@@ -65,10 +64,10 @@ def read_graph(loc, file_name):
             degrees[v1] += 1
             matrix[v0][v1] = 1
             matrix[v1][v0] = 1
-            n_lines += 1
+            n_lines += 2
 
         # assert np.sum(matrix) == n_lines  # Check all lines read
-        return matrix, np.diag(degrees), int(k), header
+        return matrix, np.diag(degrees), int(k)
 
 
 def unnormalized_laplacian(D, A):
@@ -262,13 +261,6 @@ def run_all(loc, files, out=True):
             output(file.split(".")[0], cluster_labels)
 
 
-plt.show()
-# file = comp_files[2]
-# cluster_labels = spectral_clustering2('../graphs_competition/', file)
-# output(file.split(".")[0], cluster_labels)
-
 # run_all('../graphs/', test_files)
-# run_all('../graph_tests/', ptest_files)
-run_all('../graphs_competition/', comp_files)
-
-# TODO: compute the first k eigenvectors u1, . . . , uk of L
+run_all('../graph_tests/', ptest_files)
+# run_all('../graphs_competition/', comp_files)
