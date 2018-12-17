@@ -249,7 +249,7 @@ def output(name, values):
 
 test_files = ['ca-AstroPh.txt', 'ca-CondMat.txt', 'ca-HepPh.txt', 'ca-HepTh.txt']
 comp_files = ['Oregon-1.txt', 'roadNet-CA.txt', 'soc-Epinions1.txt', 'web-NotreDame.txt']
-ptest_files = ['test1.txt', 'test2.txt']
+ptest_files = ['test1.txt', 'test2.txt', 'test3.txt']
 
 
 def run_all(loc, files, out=True):
