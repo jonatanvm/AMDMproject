@@ -58,4 +58,4 @@ def read_graph(loc, file_name):
             n_lines += 2
 
         # assert np.sum(matrix) == n_lines  # Check all lines read
-        return matrix, np.diag(degrees), int(k)
+        return matrix, np.diag(degrees), int(k), header

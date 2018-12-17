@@ -1,3 +1,4 @@
+from enum import Enum
 from time import time
 
 import matplotlib.pyplot as plt
@@ -5,8 +6,14 @@ import numpy as np
 from scipy.sparse.linalg import eigs, eigsh
 from sklearn.cluster import KMeans
 
-from code.laplacian import unnormalized_laplacian, normalized_laplacian
-from code.read_graph import read_graph
+from src.laplacian import unnormalized_laplacian, normalized_laplacian
+from src.read_graph import read_graph
+
+
+class ALGORITHM(Enum):
+    _1 = 1
+    _2 = 2
+    _3 = 3
 
 
 def spectral_clustering1(loc, graph_src, k_user=None):
