@@ -81,7 +81,7 @@ def spectral_clustering2(loc, graph_src, k_user=None):
     # Generalized Eigen-decomposition of Laplacian matrix
     print("Calculating Eigen-decomposition")
     start = time()
-    e_values, e_vectors = eigsh(A=L, k=8)
+    e_values, e_vectors = eigsh(A=L, k=k, M=D, which='SA')
 
     D = None  # Free memory
     print(e_vectors.shape)
@@ -89,9 +89,9 @@ def spectral_clustering2(loc, graph_src, k_user=None):
     print("Finished after %.2f seconds" % (time() - start))
     L = None  # Free memory
     U = np.real(e_vectors)
-    fig, ax = plt.subplots()
-    for i in range(U.shape[0]):
-        ax.scatter([U[i, 1]], [U[i, 2]], label=str(i))
+    # fig, ax = plt.subplots()
+    # for i in range(U.shape[0]):
+    #     ax.scatter([U[i, 1]], [U[i, 2]], label=str(i))
     eig_vals = np.real(e_values)
     inds = np.indices(e_values.shape).flatten()
     z = list(zip(eig_vals, inds))
@@ -107,8 +107,8 @@ def spectral_clustering2(loc, graph_src, k_user=None):
     print("Cluster sizes: %s" % cluster_sizes)
     print(kmeans.cluster_centers_)
     c = kmeans.cluster_centers_
-    ax.scatter(c[:, 0], c[:, 1], label='center')
-    plt.legend(loc='best')
+    # ax.scatter(c[:, 0], c[:, 1], label='center')
+    # plt.legend(loc='best')
     # plt.show()
     return kmeans.labels_
 
