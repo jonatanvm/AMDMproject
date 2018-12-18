@@ -2,7 +2,7 @@ from time import time
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.sparse.linalg import eigs, eigsh
+from scipy.sparse.linalg import eigsh
 from sklearn.cluster import KMeans
 
 from laplacian import unnormalized_laplacian, normalized_laplacian
@@ -83,12 +83,6 @@ def spectral_clustering2(loc, graph_src, k_user=None):
     print("Finished after %.2f seconds" % (time() - start))
     L = None  # Free memory
     U = np.real(e_vectors)
-    eig_vals = np.real(e_values)
-    inds = np.indices(e_values.shape).flatten()
-    z = list(zip(eig_vals, inds))
-    z.sort(key=lambda x: x[0])
-    v, i = list(zip(*z))
-    U = U[:, i]
     kmeans = KMeans(n_clusters=k, random_state=0).fit(U[:, :k])
     cluster_sizes = [0] * k
     for i in kmeans.labels_:
