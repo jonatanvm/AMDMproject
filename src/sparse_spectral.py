@@ -5,8 +5,8 @@ import numpy as np
 from scipy.sparse.linalg import eigs
 from sklearn.cluster import KMeans
 
-from src.laplacian import unnormalized_laplacian
-from src.read_graph import read_graph_sparse
+from laplacian import unnormalized_laplacian
+from read_graph import read_graph_sparse
 
 
 def sparse_spectral_clustering1(loc, graph_src, k_user=None):

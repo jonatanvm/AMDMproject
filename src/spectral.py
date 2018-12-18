@@ -1,4 +1,3 @@
-from enum import Enum
 from time import time
 
 import matplotlib.pyplot as plt
@@ -6,14 +5,12 @@ import numpy as np
 from scipy.sparse.linalg import eigs, eigsh
 from sklearn.cluster import KMeans
 
-from src.laplacian import unnormalized_laplacian, normalized_laplacian
-from src.read_graph import read_graph
+from laplacian import unnormalized_laplacian, normalized_laplacian
+from read_graph import read_graph
 
-
-class ALGORITHM(Enum):
-    _1 = 1
-    _2 = 2
-    _3 = 3
+ALGORITHM_1 = 1
+ALGORITHM_2 = 2
+ALGORITHM_3 = 3
 
 
 def spectral_clustering1(loc, graph_src, k_user=None):
@@ -39,7 +36,7 @@ def spectral_clustering1(loc, graph_src, k_user=None):
     # Generalized Eigen-decomposition of Laplacian matrix
     print("Calculating Eigen-decomposition")
     start = time()
-    e_values, e_vectors = eigs(L, k=k, which='SR')
+    e_values, e_vectors = eigsh(L, k=k, which='SA')
     print("Finished after %.2f seconds" % (time() - start))
     L = None  # Free memory
     U = np.real(e_vectors)
@@ -65,7 +62,6 @@ def spectral_clustering2(loc, graph_src, k_user=None):
     if k_user or k is None:
         k = k_user
         header[4] = str(k_user)
-    print(A)
     print(D)
     print("Header: %s" % " ".join(header))
     print("Finished after %.2f seconds" % (time() - start))
@@ -84,21 +80,14 @@ def spectral_clustering2(loc, graph_src, k_user=None):
     e_values, e_vectors = eigsh(A=L, k=k, M=D, which='SA')
 
     D = None  # Free memory
-    print(e_vectors.shape)
-    print(e_values.shape)
     print("Finished after %.2f seconds" % (time() - start))
     L = None  # Free memory
     U = np.real(e_vectors)
-    # fig, ax = plt.subplots()
-    # for i in range(U.shape[0]):
-    #     ax.scatter([U[i, 1]], [U[i, 2]], label=str(i))
     eig_vals = np.real(e_values)
     inds = np.indices(e_values.shape).flatten()
     z = list(zip(eig_vals, inds))
     z.sort(key=lambda x: x[0])
     v, i = list(zip(*z))
-    print(v)
-    print(i)
     U = U[:, i]
     kmeans = KMeans(n_clusters=k, random_state=0).fit(U[:, :k])
     cluster_sizes = [0] * k
@@ -106,10 +95,6 @@ def spectral_clustering2(loc, graph_src, k_user=None):
         cluster_sizes[i] += 1
     print("Cluster sizes: %s" % cluster_sizes)
     print(kmeans.cluster_centers_)
-    c = kmeans.cluster_centers_
-    # ax.scatter(c[:, 0], c[:, 1], label='center')
-    # plt.legend(loc='best')
-    # plt.show()
     return kmeans.labels_
 
 

@@ -1,0 +1,23 @@
+Graph ID: ca-AstroPh
+#vertices: 17903
+#edges: 197031
+#partitions: 50
+Last update: 2018-12-18 12:09:41
+
+Rank             Teamname   Cost
+----------------------------------
+01                   P=NP   24.5
+02                 Team29   57.5
+03                 Team37   57.5
+04               Group123   115.0
+05                   jojo   227.3333
+06                 Team75   283.25
+07                 Team30   490.0419
+08    xxFloodHunter1993xx   807.9895
+09                 Team24   844.0388
+10                 Team14   1399.08
+11             WeAreNotTA   1741.8333
+12                 Team74   2727.1471
+13                   Nuts   3346.0
+14                 Team20   6430.1852
+15             DadaMining   Error
