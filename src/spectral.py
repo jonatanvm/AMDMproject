@@ -11,6 +11,7 @@ from read_graph import read_graph
 ALGORITHM_1 = 1
 ALGORITHM_2 = 2
 ALGORITHM_3 = 3
+ALGORITHM_4 = 4
 
 
 def spectral_clustering1(loc, graph_src, k_user=None):

@@ -2,9 +2,9 @@ import sys
 
 import pandas as pd
 
-from sparse_spectral import sparse_spectral_clustering1
+from sparse_spectral import sparse_spectral_clustering1, sparse_spectral_clustering2
 from spectral import spectral_clustering1, spectral_clustering2, ALGORITHM_1, \
-    ALGORITHM_2, ALGORITHM_3
+    ALGORITHM_2, ALGORITHM_3, ALGORITHM_4
 
 
 def output(name, values):
@@ -22,6 +22,8 @@ def run_all(loc, files, algorithm, out=True):
                 cluster_labels = spectral_clustering2(loc, file)
             elif algorithm == ALGORITHM_3:
                 cluster_labels = sparse_spectral_clustering1(loc, file)
+            elif algorithm == ALGORITHM_4:
+                cluster_labels = sparse_spectral_clustering2(loc, file)
             # cluster_labels = sparse_spectral_clustering1(loc, file)
 
             if out and cluster_labels.any():
@@ -50,6 +52,6 @@ if __name__ == "__main__":
             print("Not enough arguments.")
             sys.exit()
     else:
-        # run_all('../graphs/', test_files, ALGORITHM_3, True)
-        # run_all('../graph_tests/', ptest_files, ALGORITHM_3, False)
-        run_all('../graphs_competition/', comp_files, ALGORITHM_3, True)
+        # run_all('../graphs/', test_files, ALGORITHM_4, True)
+        # run_all('../graph_tests/', ptest_files, ALGORITHM_4, False)
+        run_all('../graphs_competition/', comp_files, ALGORITHM_4, True)

@@ -12,7 +12,7 @@ def read_graph_sparse(loc, file_name, return_D=False):
             _, name, nVertices, nEdges = line
         except ValueError:
             _, name, nVertices, nEdges, k = line
-        header = ['#', str(name), str(nVertices), str(nEdges), str(k[-2])]
+        header = ['#', str(name), str(nVertices), str(nEdges), str(k)]
         print(header)
         row = np.zeros(int(nEdges)*2+int(nVertices))  # slower than empty
         col = np.zeros(int(nEdges)*2+int(nVertices))

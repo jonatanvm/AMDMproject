@@ -42,7 +42,6 @@ def sparse_spectral_clustering2(loc, graph_src, k_user=None):
     if k_user or k is None:
         k = k_user
         header[4] = str(k_user)
-
     print("Header: %s" % " ".join(header))
     print("Finished after %.2f seconds" % (time() - start))
 
