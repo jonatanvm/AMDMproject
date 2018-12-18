@@ -1,0 +1,39 @@
+Graph ID: ca-GrQc
+#vertices: 4158
+#edges: 13428
+#partitions: 2
+Last update: 2018-12-18 19:02:50
+
+Rank             Teamname   Cost
+----------------------------------
+01                   P=NP   0.0625
+02                 Team65   0.0625
+03                  Team6   0.0625
+04                 Team26   0.0625
+05                 Team37   0.0625
+06                 Team28   0.075
+07                   jojo   0.075
+08                 Team73   0.0833
+09                 Team75   0.0833
+10                 Team15   0.0833
+11            bestfitting   0.0833
+12                 Team30   0.0833
+13                 Team13   0.1379
+14                 Team20   0.1538
+15                 Team29   0.2286
+16             DadaMining   0.2286
+17                  Team9   0.2308
+18                WeAreTA   0.232
+19                 Team11   0.3882
+20                   asdf   0.4676
+21                   Nuts   0.4933
+22                 Team14   0.52
+23                 Team12   0.52
+24             WeAreNotTA   0.52
+25                 Team24   0.996
+26    xxFloodHunter1993xx   1.7249
+27               Group123   2.0
+28                  Team3   3.2085
+29                 Team74   3.7716
+30                 Team21   Error
+31                 Team41   Error

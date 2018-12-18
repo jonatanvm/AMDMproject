@@ -1,0 +1,26 @@
+Graph ID: soc-Epinions1
+#vertices: 75879
+#edges: 405740
+#partitions: 10
+Last update: 2018-12-18 19:03:40
+
+Rank             Teamname   Cost
+----------------------------------
+01                 Team28   1.5714
+02                   P=NP   1.5714
+03                   jojo   1.5714
+04                 Team65   1.6667
+05                 Team37   3.1667
+06                  Team6   3.6667
+07                 Team26   4.0
+08                 Team75   4.0
+09                 Team11   15.6669
+10                 Team30   19.9757
+11                 Team12   21.5
+12                WeAreTA   25.1851
+13                 Team13   39.6422
+14                 Team24   49.2042
+15    xxFloodHunter1993xx   63.1799
+16                   asdf   125.7171
+17                 Team20   8925.5
+18                 Team29   Error

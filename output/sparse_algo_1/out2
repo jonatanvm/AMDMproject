@@ -1,0 +1,18 @@
+/home/jonatan/projects/school/AMDMproject/venv/bin/python /home/jonatan/projects/school/AMDMproject/src/main.py
+Reading sparse graph: ca-GrQc.txt
+['#', 'ca-GrQc', '4158', '13428', '2']
+Header: # ca-GrQc 4158 13428 2
+Finished after 0.03 seconds
+Calculating Eigen-decomposition
+Finished after 1.41 seconds
+Cluster sizes: [4146, 12]
+Finished with ca-GrQc.txt 
+
+Reading sparse graph: Oregon-1.txt
+['#', 'Oregon-1', '10670', '22002', '5']
+Header: # Oregon-1 10670 22002 5
+Finished after 0.07 seconds
+Calculating Eigen-decomposition
+Finished after 6.98 seconds
+Cluster sizes: [10260, 6, 10, 158, 236]
+Finished with Oregon-1.txt 

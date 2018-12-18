@@ -1,0 +1,52 @@
+/home/jonatan/projects/school/AMDMproject/venv/bin/python /home/jonatan/projects/school/AMDMproject/src/main.py
+Reading sparse graph: ca-HepTh.txt
+['#', 'ca-HepTh', '8638', '24827', '20\n']
+/home/jonatan/projects/school/AMDMproject/venv/lib/python3.6/site-packages/scipy/sparse/linalg/dsolve/linsolve.py:295: SparseEfficiencyWarning: splu requires CSC matrix format
+  warn('splu requires CSC matrix format', SparseEfficiencyWarning)
+Header: # ca-HepTh 8638 24827 20
+
+Finished after 0.06 seconds
+Calculating Eigen-decomposition
+Finished after 0.77 seconds
+Cluster sizes: [9, 8356, 8, 28, 17, 15, 11, 5, 10, 15, 19, 27, 11, 8, 15, 21, 9, 9, 21, 24]
+Finished with ca-HepTh.txt 
+
+Reading sparse graph: ca-HepPh.txt
+['#', 'ca-HepPh', '11204', '117649', '25\n']
+/home/jonatan/projects/school/AMDMproject/venv/lib/python3.6/site-packages/scipy/sparse/linalg/dsolve/linsolve.py:295: SparseEfficiencyWarning: splu requires CSC matrix format
+  warn('splu requires CSC matrix format', SparseEfficiencyWarning)
+Header: # ca-HepPh 11204 117649 25
+
+Finished after 0.28 seconds
+Calculating Eigen-decomposition
+Finished after 1.52 seconds
+Cluster sizes: [207, 72, 7, 19, 5, 9, 22, 11, 13, 12, 11, 11, 12, 25, 44, 9, 8, 10, 16, 21, 20, 65, 40, 6, 10529]
+Finished with ca-HepPh.txt 
+
+Reading sparse graph: ca-AstroPh.txt
+['#', 'ca-AstroPh', '17903', '197031', '50\n']
+Header: # ca-AstroPh 17903 197031 50
+
+Finished after 0.47 seconds
+Calculating Eigen-decomposition
+/home/jonatan/projects/school/AMDMproject/venv/lib/python3.6/site-packages/scipy/sparse/linalg/dsolve/linsolve.py:295: SparseEfficiencyWarning: splu requires CSC matrix format
+  warn('splu requires CSC matrix format', SparseEfficiencyWarning)
+Finished after 2.92 seconds
+Cluster sizes: [17202, 5, 3, 6, 8, 9, 12, 4, 10, 4, 6, 8, 5, 4, 6, 5, 5, 23, 6, 5, 4, 11, 11, 11, 9, 7, 8, 7, 12, 14, 8, 10, 16, 7, 13, 7, 9, 9, 14, 24, 3, 24, 13, 29, 97, 36, 18, 4, 60, 72]
+Finished with ca-AstroPh.txt 
+
+Reading sparse graph: ca-CondMat.txt
+['#', 'ca-CondMat', '21363', '91342', '100\n']
+/home/jonatan/projects/school/AMDMproject/venv/lib/python3.6/site-packages/scipy/sparse/linalg/dsolve/linsolve.py:295: SparseEfficiencyWarning: splu requires CSC matrix format
+  warn('splu requires CSC matrix format', SparseEfficiencyWarning)
+Header: # ca-CondMat 21363 91342 100
+
+Finished after 0.23 seconds
+Calculating Eigen-decomposition
+Finished after 15.13 seconds
+Cluster sizes: [476, 5, 9, 9, 4, 7, 7, 7, 9, 6, 47, 15, 6, 9, 7, 8, 9, 16, 8, 10, 6, 9, 12, 10, 9, 11, 7, 7, 16, 8, 8, 12, 10, 5, 14, 13, 6, 7, 7, 5, 22, 5, 6, 35, 5, 26, 7, 12, 7, 23, 14, 10, 8, 8, 5, 21, 6, 21, 7, 3, 29, 30, 8, 9, 20, 11, 20, 12, 19, 22, 8, 25, 4, 10, 22, 15, 8, 18, 12, 19, 14, 13, 8, 13, 11, 30, 26, 20, 16, 26, 22, 10, 39, 19, 10, 18, 26, 19516, 23, 75]
+Finished with ca-CondMat.txt 
+
+
+Process finished with exit code 0
+

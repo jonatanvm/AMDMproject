@@ -1,0 +1,48 @@
+/home/jonatan/projects/school/AMDMproject/venv/bin/python /home/jonatan/projects/school/AMDMproject/src/main.py
+Reading sparse graph: ca-GrQc.txt
+['#', 'ca-GrQc', '4158', '13428', '2\n']
+Header: # ca-GrQc 4158 13428 2
+
+Finished after 0.03 seconds
+Calculating Eigen-decomposition
+/home/jonatan/projects/school/AMDMproject/venv/lib/python3.6/site-packages/scipy/sparse/linalg/dsolve/linsolve.py:295: SparseEfficiencyWarning: splu requires CSC matrix format
+  warn('splu requires CSC matrix format', SparseEfficiencyWarning)
+Finished after 1.03 seconds
+Cluster sizes: [4118, 40]
+Finished with ca-GrQc.txt 
+
+Reading sparse graph: Oregon-1.txt
+['#', 'Oregon-1', '10670', '22002', '5\n']
+/home/jonatan/projects/school/AMDMproject/venv/lib/python3.6/site-packages/scipy/sparse/linalg/dsolve/linsolve.py:295: SparseEfficiencyWarning: splu requires CSC matrix format
+  warn('splu requires CSC matrix format', SparseEfficiencyWarning)
+Header: # Oregon-1 10670 22002 5
+
+Finished after 0.07 seconds
+Calculating Eigen-decomposition
+Finished after 0.34 seconds
+Cluster sizes: [9966, 10, 158, 248, 288]
+Finished with Oregon-1.txt 
+
+Reading sparse graph: soc-Epinions1.txt
+['#', 'soc-Epinions1', '75879', '405740', '10\n']
+Header: # soc-Epinions1 75879 405740 10
+
+Finished after 0.96 seconds
+Calculating Eigen-decomposition
+/home/jonatan/projects/school/AMDMproject/venv/lib/python3.6/site-packages/scipy/sparse/linalg/dsolve/linsolve.py:295: SparseEfficiencyWarning: splu requires CSC matrix format
+  warn('splu requires CSC matrix format', SparseEfficiencyWarning)
+Finished after 8.51 seconds
+Cluster sizes: [75705, 7, 9, 21, 30, 25, 7, 32, 35, 8]
+Finished with soc-Epinions1.txt 
+
+Reading sparse graph: web-NotreDame.txt
+['#', 'web-NotreDame', '325729', '1117563', '20\n']
+/home/jonatan/projects/school/AMDMproject/venv/lib/python3.6/site-packages/scipy/sparse/linalg/dsolve/linsolve.py:295: SparseEfficiencyWarning: splu requires CSC matrix format
+Header: # web-NotreDame 325729 1117563 20
+  warn('splu requires CSC matrix format', SparseEfficiencyWarning)
+
+Finished after 2.75 seconds
+Calculating Eigen-decomposition
+Finished after 2901.24 seconds
+Cluster sizes: [258893, 864, 2652, 2660, 9040, 1887, 864, 5840, 2625, 12662, 291, 6868, 492, 1754, 841, 5471, 841, 841, 1245, 9098]
+Finished with web-NotreDame.txt

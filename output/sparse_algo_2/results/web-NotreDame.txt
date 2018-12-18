@@ -1,0 +1,21 @@
+Graph ID: web-NotreDame
+#vertices: 325729
+#edges: 1117563
+#partitions: 20
+Last update: 2018-12-18 19:05:48
+
+Rank             Teamname   Cost
+----------------------------------
+01                   P=NP   0.0379
+02                 Team11   0.5248
+03                 Team37   0.5488
+04                 Team12   0.5804
+05                   jojo   0.5945
+06                WeAreTA   1.7908
+07                  Team6   24.4937
+08                 Team13   63.7562
+09    xxFloodHunter1993xx   251.7759
+10                 Team30   2943.5576
+11                 Team20   9459.4419
+12                 Team75   56387.0
+13                 Team24   Error

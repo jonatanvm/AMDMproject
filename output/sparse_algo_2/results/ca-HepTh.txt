@@ -1,0 +1,26 @@
+Graph ID: ca-HepTh
+#vertices: 8638
+#edges: 24827
+#partitions: 20
+Last update: 2018-12-18 19:11:12
+
+Rank             Teamname   Cost
+----------------------------------
+01                   P=NP   3.8
+02                 Team28   5.8
+03                 Team75   5.8
+04                 Team37   6.0
+05                 Team15   6.0
+06                   jojo   11.0
+07                 Team29   22.4
+08               Group123   27.5
+09                   Nuts   50.7329
+10                 Team24   51.6587
+11                 Team38   52.9618
+12    xxFloodHunter1993xx   70.5208
+13             WeAreNotTA   118.6957
+14                 Team14   138.65
+15                 Team74   187.0403
+16                   asdf   440.1111
+17                 Team20   1109.6667
+18             DadaMining   1215.75

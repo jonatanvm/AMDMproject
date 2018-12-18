@@ -1,0 +1,25 @@
+Graph ID: ca-CondMat
+#vertices: 21363
+#edges: 91342
+#partitions: 100
+Last update: 2018-12-18 15:10:12
+
+Rank             Teamname   Cost
+----------------------------------
+01                   P=NP   49.5
+02                 Team75   107.0
+03                 Team37   108.0
+04                 Team29   111.0
+05                   jojo   178.75
+06               Group123   219.0
+07                 Team30   385.4883
+08    xxFloodHunter1993xx   780.6333
+09                 Team24   1087.8889
+10                   asdf   1537.1667
+11             WeAreNotTA   1929.25
+12                 Team20   1958.6429
+13                   Nuts   4277.0
+14                 Team74   4436.05
+15                 Team14   44687.0
+16                 Team21   Error
+17             DadaMining   Error
