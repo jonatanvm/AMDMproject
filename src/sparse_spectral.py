@@ -5,6 +5,7 @@ import numpy as np
 from scipy.sparse.linalg import eigsh
 from sklearn.cluster import KMeans
 
+from kmeans import k_means
 from read_graph import read_graph_sparse
 
 
@@ -66,3 +67,35 @@ def sparse_spectral_clustering2(loc, graph_src, k_user=None):
     print("Cluster sizes: %s" % cluster_sizes)
     plt.show()
     return kmeans.labels_
+
+
+def custom_sparse_spectral_clustering2(loc, graph_src, k_user=None):
+    print("Reading sparse graph: " + graph_src)
+    start = time()
+    L, D, k, header = read_graph_sparse(loc, graph_src, True)
+    if k_user or k is None:
+        k = k_user
+        header[4] = str(k_user)
+    print("Header: %s" % " ".join(header))
+    print("Finished after %.2f seconds" % (time() - start))
+
+    # Generalized Eigen-decomposition of Laplacian matrix
+    print("Calculating Eigen-decomposition")
+    start = time()
+    e_values, e_vectors = eigsh(L, k=k, M=D, which='SA')
+    print("Finished after %.2f seconds" % (time() - start))
+    L = None  # Free memory
+    D = None  # Free memory
+    U = np.real(e_vectors)
+    # eig_vals = np.real(e_values)
+    # inds = np.indices(e_values.shape).flatten()
+    # z = list(zip(eig_vals, inds))
+    # z.sort(key=lambda x: x[0])
+    # v, i = list(zip(*z))
+    # U = U[:, i]
+    #kmeans = KMeans(n_clusters=k, random_state=0).fit(U[:, :k])
+    centroids, clusters = k_means(U[:, :k], k, plot=True)
+    print(centroids)
+    print(clusters)
+    labels_ = []
+    return labels_
