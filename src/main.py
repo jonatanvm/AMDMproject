@@ -2,6 +2,9 @@ import sys
 
 import pandas as pd
 
+from sparse_spectral import sparse_spectral_clustering1, sparse_spectral_clustering2, custom_sparse_spectral_clustering2
+from spectral import spectral_clustering1, spectral_clustering2, spectral_clustering3, ALGORITHM_1, \
+    ALGORITHM_2, ALGORITHM_3, ALGORITHM_4, ALGORITHM_5
 from calculate_comp_value import calculate_value
 from sparse_spectral import *
 from spectral import *
@@ -23,8 +26,10 @@ def run_all(loc, files, algorithm, out=True):
             elif algorithm == ALGORITHM_2:
                 cluster_labels = spectral_clustering2(loc, file)
             elif algorithm == ALGORITHM_3:
-                cluster_labels = sparse_spectral_clustering1(loc, file)
+                cluster_labels = spectral_clustering3(loc, file)
             elif algorithm == ALGORITHM_4:
+                cluster_labels = sparse_spectral_clustering1(loc, file)
+            elif algorithm == ALGORITHM_5:
                 cluster_labels = sparse_spectral_clustering2(loc, file)
             elif algorithm == ALGORITHM_5:
                 cluster_labels = custom_sparse_spectral_clustering2(loc, file)

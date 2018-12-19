@@ -7,6 +7,7 @@ from sklearn.cluster import KMeans
 
 from laplacian import unnormalized_laplacian, normalized_laplacian
 from read_graph import read_graph
+from normalize_u import normalize_u
 
 ALGORITHM_1 = 1
 ALGORITHM_2 = 2
@@ -94,10 +95,13 @@ def spectral_clustering2(loc, graph_src, k_user=None):
     return kmeans.labels_
 
 
-def spectral_clustering3(graph_src, k):
-    print("Reading graph")
+def spectral_clustering3(loc, graph_src, k_user=None):
+    print("Reading graph: " + graph_src)
     start = time()
-    A, D = read_graph(graph_src)
+    A, D, k, header = read_graph(loc, graph_src)
+    if k_user or k is None:
+        k = k_user
+        header[4] = str(k_user)
     print("Finished after %.2f seconds" % (time() - start))
 
     # Calculate laplacian matrix
@@ -115,4 +119,15 @@ def spectral_clustering3(graph_src, k):
     e_values, e_vectors = eigsh(laplacian_matrix, k=k)
     print("Finished after %.2f seconds" % (time() - start))
     laplacian_matrix = None  # Free memory
-    X = np.real(e_vectors)
+    U = np.real(e_vectors)
+    print("Normalizing U")
+    start = time()
+    T = normalize_u(U)
+    print("Finished after %.2f seconds" % (time() - start))
+    kmeans = KMeans(n_clusters=k, random_state=0).fit(T[:, :k])
+    cluster_sizes = [0] * k
+    for i in kmeans.labels_:
+        cluster_sizes[i] += 1
+    print("Cluster sizes: %s" % cluster_sizes)
+    print(kmeans.cluster_centers_)
+    return kmeans.labels_
