@@ -58,6 +58,6 @@ if __name__ == "__main__":
             print("Not enough arguments.")
             sys.exit()
     else:
-        run_all('../graphs/', test_files, ALGORITHM_4, True)
+        run_all('../graphs/', test_files, ALGORITHM_5, True)
         # run_all('../graph_tests/', ptest_files2, ALGORITHM_5, False)
         # run_all('../graphs_competition/', comp_files, ALGORITHM_4, True)

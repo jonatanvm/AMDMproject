@@ -5,7 +5,7 @@ import numpy as np
 from scipy.sparse.linalg import eigsh
 from sklearn.cluster import KMeans
 
-from kmeans import k_means
+from kmeans2 import k_means_pp
 from read_graph import read_graph_sparse
 
 
@@ -87,15 +87,9 @@ def custom_sparse_spectral_clustering2(loc, graph_src, k_user=None):
     L = None  # Free memory
     D = None  # Free memory
     U = np.real(e_vectors)
-    # eig_vals = np.real(e_values)
-    # inds = np.indices(e_values.shape).flatten()
-    # z = list(zip(eig_vals, inds))
-    # z.sort(key=lambda x: x[0])
-    # v, i = list(zip(*z))
-    # U = U[:, i]
-    #kmeans = KMeans(n_clusters=k, random_state=0).fit(U[:, :k])
-    centroids, clusters = k_means(U[:, :k], k, plot=True)
-    print(centroids)
-    print(clusters)
-    labels_ = []
-    return labels_
+    print("Calculating Kmeans")
+    start = time()
+    centroids, clusters_lables = k_means_pp(U[:, :k], k)
+    print("Finished after %.2f seconds" % (time() - start))
+    print(clusters_lables)
+    return clusters_lables
