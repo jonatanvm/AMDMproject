@@ -5,7 +5,7 @@ import numpy as np
 from scipy.sparse.linalg import eigsh
 from sklearn.cluster import KMeans
 
-from laplacian import unnormalized_laplacian, normalized_laplacian, normalized_laplacian_2
+from laplacian import unnormalized_laplacian, normalized_laplacian
 from read_graph import read_graph
 from normalize_u import normalize_u
 
@@ -14,6 +14,8 @@ ALGORITHM_2 = 2
 ALGORITHM_3 = 3
 ALGORITHM_4 = 4
 ALGORITHM_5 = 5
+ALGORITHM_6 = 6
+ALGORITHM_7 = 7
 
 
 def spectral_clustering1(loc, graph_src, k_user=None):
@@ -122,7 +124,7 @@ def spectral_clustering3(loc, graph_src, k_user=None):
     U = np.real(e_vectors)
     print("Normalizing U")
     start = time()
-    T = normalize_u(U)
+    T = U[:, :k] / np.sum(U[:, :k], axis=0)
     print("Finished after %.2f seconds" % (time() - start))
     kmeans = KMeans(n_clusters=k, random_state=0).fit(T[:, :k])
     cluster_sizes = [0] * k

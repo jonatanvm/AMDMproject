@@ -5,7 +5,7 @@ import numpy as np
 from scipy.sparse.linalg import eigsh
 from sklearn.cluster import KMeans
 
-from kmeans2 import k_means_pp
+from kmeans2 import k_means_pp, nk_means_pp
 from read_graph import read_graph_sparse
 
 
@@ -69,6 +69,31 @@ def sparse_spectral_clustering2(loc, graph_src, k_user=None):
     return kmeans.labels_
 
 
+def custom_sparse_spectral_clustering1(loc, graph_src, k_user=None):
+    print("Reading sparse graph: " + graph_src)
+    start = time()
+    L, _, k, header = read_graph_sparse(loc, graph_src, False)
+    if k_user or k is None:
+        k = k_user
+        header[4] = str(k_user)
+    print("Header: %s" % " ".join(header))
+    print("Finished after %.2f seconds" % (time() - start))
+
+    # Generalized Eigen-decomposition of Laplacian matrix
+    print("Calculating Eigen-decomposition")
+    start = time()
+    e_values, e_vectors = eigsh(L, k=k, which='SA')
+    print("Finished after %.2f seconds" % (time() - start))
+    L = None  # Free memory
+    U = np.real(e_vectors)
+    print("Calculating Kmeans")
+    start = time()
+    clusters_lables = nk_means_pp(graph_src.split(".")[0], loc + graph_src, U[:, :k], k)
+    print("Finished after %.2f seconds" % (time() - start))
+    print(clusters_lables)
+    return clusters_lables
+
+
 def custom_sparse_spectral_clustering2(loc, graph_src, k_user=None):
     print("Reading sparse graph: " + graph_src)
     start = time()
@@ -89,7 +114,7 @@ def custom_sparse_spectral_clustering2(loc, graph_src, k_user=None):
     U = np.real(e_vectors)
     print("Calculating Kmeans")
     start = time()
-    centroids, clusters_lables = k_means_pp(U[:, :k], k)
+    clusters_lables = nk_means_pp(graph_src.split(".")[0], loc + graph_src, U[:, :k], k)
     print("Finished after %.2f seconds" % (time() - start))
     print(clusters_lables)
     return clusters_lables

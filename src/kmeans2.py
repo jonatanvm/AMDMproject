@@ -1,5 +1,10 @@
+from queue import PriorityQueue
+
 import matplotlib.pyplot as plt
 import numpy as np
+
+from calculate_comp_value import calculate_value
+from main import output
 
 cmpd = ['orangered', 'dodgerblue', 'springgreen']
 cmpcent = ['red', 'darkblue', 'limegreen']
@@ -93,11 +98,25 @@ def move_centroids(data, old_centroids, new_centroids, clusters):
     return new_centroids
 
 
-def k_means_pp(data, k, random_seed=1, num_iters=300, tol=1e-4, plot=False):
+def nk_means_pp(file_name, original, data, k, n=10, num_iters=300, tol=1e-4, plot=False):
+    q = PriorityQueue()
+    for i in range(n):
+        seed = np.random.randint(1000000)
+        old_centroids, clusters = k_means_pp(data, k, random_seed=seed, num_iters=num_iters, tol=tol, plot=plot)
+        output_name = output('temp/'+file_name + str(seed), clusters)
+        value = calculate_value(output_name, original)
+        q.put((value, i, seed, clusters))
+    best = q.get()
+    _, _, _, best_clusters = best
+    print("Best output: " + str(best))
+    return best_clusters
+
+
+def k_means_pp(data, k, random_seed=1, num_iters=300, tol=1e-4, plot=False, debug=False):
     # INPUT: N x d data array, k number of clusters, number of iterations, boolean plot.
     # OUTPUT: N x 1 array of cluster assignments.
-
-    print("Select centroids")
+    if debug:
+        print("Select centroids")
     old_centroids = select_centroids(data, k, random_seed)
     new_centroids = np.zeros(shape=old_centroids.shape)
 
@@ -114,9 +133,9 @@ def k_means_pp(data, k, random_seed=1, num_iters=300, tol=1e-4, plot=False):
         move_centroids(data, old_centroids, new_centroids, clusters)
         error = np.linalg.norm(new_centroids - old_centroids)
         old_centroids = new_centroids.copy()
-        print("Error %s: %s" % (i, error))
         i += 1
-
+    if debug:
+        print("Converged after %s iterations" % i)
     plt.show()
     return old_centroids, clusters
 
