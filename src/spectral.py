@@ -5,7 +5,7 @@ import numpy as np
 from scipy.sparse.linalg import eigsh
 from sklearn.cluster import KMeans
 
-from laplacian import unnormalized_laplacian, normalized_laplacian, normalized_laplacian_2
+from laplacian import unnormalized_laplacian, normalized_laplacian
 from read_graph import read_graph
 from normalize_u import normalize_u
 
