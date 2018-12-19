@@ -2,13 +2,16 @@ import sys
 
 import pandas as pd
 
+from calculate_comp_value import calculate_value
 from sparse_spectral import *
 from spectral import *
 
 
 def output(name, values):
     df = pd.DataFrame(values)
-    df.to_csv('../output/' + name + '.output', index=True, header=False, sep=" ")
+    file_name = '../output/' + name + '.output'
+    df.to_csv(file_name, index=True, header=False, sep=" ")
+    return file_name
 
 
 def run_all(loc, files, algorithm, out=True):
@@ -28,7 +31,8 @@ def run_all(loc, files, algorithm, out=True):
             # cluster_labels = sparse_spectral_clustering1(loc, file)
 
             if out and cluster_labels.any():
-                output(file.split(".")[0], cluster_labels)
+                output_name = output(file.split(".")[0], cluster_labels)
+                calculate_value(output_name, loc + file)
             print("Finished with %s \n" % file)
         except MemoryError:
             print("Ran out of memory!")
@@ -54,6 +58,6 @@ if __name__ == "__main__":
             print("Not enough arguments.")
             sys.exit()
     else:
-        # run_all('../graphs/', test_files, ALGORITHM_5, False)
+        run_all('../graphs/', test_files, ALGORITHM_4, True)
         # run_all('../graph_tests/', ptest_files2, ALGORITHM_5, False)
-        run_all('../graphs_competition/', comp_files, ALGORITHM_4, True)
+        # run_all('../graphs_competition/', comp_files, ALGORITHM_4, True)
