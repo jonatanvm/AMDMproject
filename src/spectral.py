@@ -5,7 +5,7 @@ import numpy as np
 from scipy.sparse.linalg import eigsh
 from sklearn.cluster import KMeans
 
-from laplacian import unnormalized_laplacian, normalized_laplacian
+from laplacian import unnormalized_laplacian, normalized_laplacian, normalized_laplacian_2
 from read_graph import read_graph
 from normalize_u import normalize_u
 
@@ -116,7 +116,7 @@ def spectral_clustering3(loc, graph_src, k_user=None):
     # Eigen-decomposition of Laplacian matrix
     print("Calculating Eigen-decomposition")
     start = time()
-    e_values, e_vectors = eigsh(laplacian_matrix, k=k)
+    e_values, e_vectors = eigsh(laplacian_matrix, k=k, which='SA')
     print("Finished after %.2f seconds" % (time() - start))
     laplacian_matrix = None  # Free memory
     U = np.real(e_vectors)
