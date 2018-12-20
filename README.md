@@ -23,4 +23,4 @@ Algorithmic methods for data mining course project
 * Oregon: custom sparse algo2 - 2.8181818181818183
 * soc-Epinions: custom sparse algo2 - 1.5714285714285714
 * web-NotreDame: custom sparse algo2 - 0.2621951219512195
-* roadNet-CA: custom sparse algo2 - 0.305
+* roadNet-CA: custom sparse algo2 - 12.3043

@@ -31,7 +31,7 @@ def run_all(loc, files, algorithm, out=True):
             elif algorithm == ALGORITHM_6:
                 cluster_labels = custom_sparse_spectral_clustering1(loc, file, e_mode='eigsh')
             elif algorithm == ALGORITHM_7:
-                cluster_labels = custom_sparse_spectral_clustering2(loc, file, e_mode='eigsh')
+                cluster_labels = custom_sparse_spectral_clustering2(loc, file, e_mode='lobpcg')
 
             if out and cluster_labels.any():
                 output(file.split(".")[0], cluster_labels)
@@ -43,8 +43,8 @@ def run_all(loc, files, algorithm, out=True):
             pass
 
 
-test_files = ['ca-CondMat.txt']
-comp_files = ['soc-Epinions1.txt', 'web-NotreDame.txt', ]
+test_files = ['ca-HepTh.txt', 'ca-HepPh.txt', 'ca-AstroPh.txt', 'ca-CondMat.txt']
+comp_files = ['ca-GrQc.txt', 'Oregon-1.txt', 'soc-Epinions1.txt', 'web-NotreDame.txt', 'roadNet-CA.txt', ]
 ptest_files = ['test1.txt', 'test2.txt', 'test3.txt']
 ptest_files2 = ['test3.txt']
 
