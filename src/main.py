@@ -29,7 +29,7 @@ def run_all(loc, files, algorithm, out=True):
             elif algorithm == ALGORITHM_5:
                 cluster_labels = sparse_spectral_clustering2(loc, file)
             elif algorithm == ALGORITHM_6:
-                cluster_labels = custom_sparse_spectral_clustering1(loc, file, e_mode='lobpcg')
+                cluster_labels = custom_sparse_spectral_clustering1(loc, file, e_mode='eigsh')
             elif algorithm == ALGORITHM_7:
                 cluster_labels = custom_sparse_spectral_clustering2(loc, file, e_mode='lobpcg')
 
@@ -42,8 +42,8 @@ def run_all(loc, files, algorithm, out=True):
             pass
 
 
-test_files = ['ca-HepTh.txt', 'ca-HepPh.txt', 'ca-AstroPh.txt', 'ca-CondMat.txt']
-comp_files = ['roadNet-CA.txt', ]
+test_files = ['ca-CondMat.txt']
+comp_files = ['soc-Epinions1.txt', 'web-NotreDame.txt', ]
 ptest_files = ['test1.txt', 'test2.txt', 'test3.txt']
 ptest_files2 = ['test3.txt']
 
@@ -62,5 +62,5 @@ if __name__ == "__main__":
             sys.exit()
     else:
         # run_all('../graphs/', test_files, ALGORITHM_7, True)
-        # run_all('../graph_tests/', ptest_files, ALGORITHM_6, False)
+        # run_all('../graph_tests/', ptest_files, ALGORITHM_7, False)
         run_all('../graphs_competition/', comp_files, ALGORITHM_7, True)

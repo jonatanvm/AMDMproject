@@ -136,12 +136,10 @@ def nk_means_pp(file_name, original, data, k, n=10, n_jobs=10, num_iters=300, to
     # Wait for all processes to finnish
     for p in processes:
         p.join()
-    print("Join process")
 
     for p in processes:
         if p.is_alive():
             p.terminate()
-    print("Terminate")
 
     # Get best result
     best = min(q, key=lambda t: t[0])

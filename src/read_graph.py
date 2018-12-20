@@ -14,13 +14,14 @@ def read_graph_sparse(loc, file_name, return_D=False):
             _, name, nVertices, nEdges, k = line
         header = ['#', str(name), str(nVertices), str(nEdges), str(k)]
         print(header)
-        row = np.zeros(int(nEdges)*2+int(nVertices))  # slower than empty
-        col = np.zeros(int(nEdges)*2+int(nVertices))
-        data = np.zeros(int(nEdges)*2+int(nVertices))
+        row = np.zeros(int(nEdges) * 2 + int(nVertices))  # slower than empty
+        col = np.zeros(int(nEdges) * 2 + int(nVertices))
+        data = np.zeros(int(nEdges) * 2 + int(nVertices))
         if return_D:
             row_d = np.zeros(int(nVertices))  # slower than empty
             col_d = np.zeros(int(nVertices))
         degrees = np.zeros(int(nVertices))
+        read_edges = {}
         ind = 0
         while True:
             line = graph.readline()
@@ -28,8 +29,16 @@ def read_graph_sparse(loc, file_name, return_D=False):
                 break
             v0, v1 = line.split(" ")
             v0, v1 = int(v0), int(v1)
-            degrees[v0] += 1
-            degrees[v1] += 1
+
+            if not read_edges.get(str(v0) + "-" + str(v1)):
+                degrees[v0] += 1
+                degrees[v1] += 1
+
+            if v0 < v1:
+                read_edges[str(v0) + "-" + str(v1)] = True
+            else:
+                read_edges[str(v1) + "-" + str(v0)] = True
+
 
             row[ind] = v0
             col[ind] = v1

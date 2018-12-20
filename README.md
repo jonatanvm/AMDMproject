@@ -15,9 +15,12 @@ Algorithmic methods for data mining course project
 
 ## Best results
 
-* AstroPh: algo1
-* CondMat: -
-* GrQc: algo2
-* HepPh: algo1
-* HepTh: algo1
-* Oregon: algo2
+* AstroPh: custom sparse algo1 - 48
+* CondMat: custom sparse algo1 -154
+* HepPh: custom sparse algo1 - 15.0
+* HepTh: custom sparse algo1 - 5.8
+* GrQc: custom sparse algo2 - 0.075
+* Oregon: custom sparse algo2 - 2.8181818181818183
+* soc-Epinions: custom sparse algo2 - 1.5714285714285714
+* web-NotreDame: custom sparse algo2 - 0.2621951219512195
+* roadNet-CA: custom sparse algo2 - 0.305
