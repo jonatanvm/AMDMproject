@@ -14,7 +14,7 @@ def calculate_value(original_file, cluster_labels):
         for i in cluster_labels:
             cluster_sizes[i] += 1
         min_value = min(cluster_sizes)
-        edgeAreNotInSameVertice = 0
+        edge_are_not_in_same_vertex = 0
 
         while True:
             line = graph.readline()
@@ -23,10 +23,10 @@ def calculate_value(original_file, cluster_labels):
             edge1, edge2 = line.split(" ")
             edge1 = int(edge1)
             edge2 = int(edge2)
-            vertice1 = cluster_labels[edge1]
-            vertice2 = cluster_labels[edge2]
-            if (vertice1 != vertice2):
-                edgeAreNotInSameVertice += 1
+            vertex1 = cluster_labels[edge1]
+            vertex2 = cluster_labels[edge2]
+            if vertex1 != vertex2:
+                edge_are_not_in_same_vertex += 1
 
-        value = edgeAreNotInSameVertice / min_value
+        value = edge_are_not_in_same_vertex / min_value
         return value
