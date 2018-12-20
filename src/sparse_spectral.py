@@ -84,7 +84,7 @@ def custom_sparse_spectral_clustering1(loc, graph_src, k_user=None, e_mode='eigs
     start = time()
     if e_mode == 'lobpcg':
         # Random estimations of eigenvalues
-        X = np.random.rand(L.shape[0], 3)
+        X = np.random.rand(L.shape[0], k)
         e_values, e_vectors = lobpcg(A=L, X=X, largest=False)
     elif e_mode == 'eigsh':
         e_values, e_vectors = eigsh(L, k=k, which='SA')
@@ -117,7 +117,7 @@ def custom_sparse_spectral_clustering2(loc, graph_src, k_user=None, e_mode='eigs
 
     if e_mode == 'lobpcg':
         # Random estimations of eigenvalues
-        X = np.random.rand(L.shape[0], 3)
+        X = np.random.rand(L.shape[0], k)
         e_values, e_vectors = lobpcg(A=L, X=X, B=D, largest=False)
     elif e_mode == 'eigsh':
         e_values, e_vectors = eigsh(L, k=k, M=D, which='SA')
