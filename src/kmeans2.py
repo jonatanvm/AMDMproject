@@ -103,7 +103,7 @@ def nk_means_pp(file_name, original, data, k, n=10, num_iters=300, tol=1e-4, plo
     for i in range(n):
         seed = np.random.randint(1000000)
         old_centroids, clusters = k_means_pp(data, k, random_seed=seed, num_iters=num_iters, tol=tol, plot=plot)
-        output_name = output('temp/'+file_name + str(seed), clusters)
+        output_name = output('temp/' + file_name + str(seed), clusters)
         value = calculate_value(output_name, original)
         q.put((value, i, seed, clusters))
     best = q.get()
@@ -123,7 +123,6 @@ def k_means_pp(data, k, random_seed=1, num_iters=300, tol=1e-4, plot=False, debu
     i = 0
     error = np.inf
     while i < num_iters and error > tol:
-        # print("%s" % i)
         clusters = assign_points(data, old_centroids)
 
         # plotting
@@ -131,7 +130,11 @@ def k_means_pp(data, k, random_seed=1, num_iters=300, tol=1e-4, plot=False, debu
             plotting(data, old_centroids, clusters)
 
         move_centroids(data, old_centroids, new_centroids, clusters)
+
         error = np.linalg.norm(new_centroids - old_centroids)
+        if debug:
+            print("Error after %s iterations %s" % (i, error))
+
         old_centroids = new_centroids.copy()
         i += 1
     if debug:

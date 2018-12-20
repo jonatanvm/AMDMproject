@@ -2,10 +2,10 @@ from time import time
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.sparse.linalg import eigsh
+from scipy.sparse.linalg import eigsh, lobpcg
 from sklearn.cluster import KMeans
 
-from kmeans2 import k_means_pp, nk_means_pp
+from kmeans2 import nk_means_pp
 from read_graph import read_graph_sparse
 
 
@@ -69,7 +69,7 @@ def sparse_spectral_clustering2(loc, graph_src, k_user=None):
     return kmeans.labels_
 
 
-def custom_sparse_spectral_clustering1(loc, graph_src, k_user=None):
+def custom_sparse_spectral_clustering1(loc, graph_src, k_user=None, e_mode='eigsh'):
     print("Reading sparse graph: " + graph_src)
     start = time()
     L, _, k, header = read_graph_sparse(loc, graph_src, False)
@@ -82,7 +82,14 @@ def custom_sparse_spectral_clustering1(loc, graph_src, k_user=None):
     # Generalized Eigen-decomposition of Laplacian matrix
     print("Calculating Eigen-decomposition")
     start = time()
-    e_values, e_vectors = eigsh(L, k=k, which='SA')
+    if e_mode == 'lobpcg':
+        # Random estimations of eigenvalues
+        X = np.random.rand(L.shape[0], 3)
+        e_values, e_vectors = lobpcg(A=L, X=X, largest=False)
+    elif e_mode == 'eigsh':
+        e_values, e_vectors = eigsh(L, k=k, which='SA')
+    else:
+        raise Exception("Invalid eigen-decomposition algorithm (e_mode), either lobpcg or eigsh.")
     print("Finished after %.2f seconds" % (time() - start))
     L = None  # Free memory
     U = np.real(e_vectors)
@@ -94,7 +101,7 @@ def custom_sparse_spectral_clustering1(loc, graph_src, k_user=None):
     return clusters_lables
 
 
-def custom_sparse_spectral_clustering2(loc, graph_src, k_user=None):
+def custom_sparse_spectral_clustering2(loc, graph_src, k_user=None, e_mode='eigsh'):
     print("Reading sparse graph: " + graph_src)
     start = time()
     L, D, k, header = read_graph_sparse(loc, graph_src, True)
@@ -107,7 +114,16 @@ def custom_sparse_spectral_clustering2(loc, graph_src, k_user=None):
     # Generalized Eigen-decomposition of Laplacian matrix
     print("Calculating Eigen-decomposition")
     start = time()
-    e_values, e_vectors = eigsh(L, k=k, M=D, which='SA')
+
+    if e_mode == 'lobpcg':
+        # Random estimations of eigenvalues
+        X = np.random.rand(L.shape[0], 3)
+        e_values, e_vectors = lobpcg(A=L, X=X, B=D, largest=False)
+    elif e_mode == 'eigsh':
+        e_values, e_vectors = eigsh(L, k=k, M=D, which='SA')
+    else:
+        raise Exception("Invalid eigen-decomposition algorithm (e_mode), either lobpcg or eigsh.")
+
     print("Finished after %.2f seconds" % (time() - start))
     L = None  # Free memory
     D = None  # Free memory
