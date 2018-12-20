@@ -1,3 +1,4 @@
+import os
 import sys
 
 import pandas as pd
@@ -6,10 +7,13 @@ from calculate_comp_value import calculate_value
 from sparse_spectral import *
 from spectral import *
 
+MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
+ROOT_PATH = os.path.dirname(MODULE_PATH)
+
 
 def output(name, values):
     df = pd.DataFrame(values)
-    file_name = '../output/' + name + '.output'
+    file_name = ROOT_PATH + '/output/' + name + '.output'
     df.to_csv(file_name, index=True, header=False, sep=" ")
     return file_name
 
@@ -18,7 +22,7 @@ def run_all(files, algorithm, out=True):
     for file_name in files:
         try:
             cluster_labels = None
-            path = '../graphs/' + file_name
+            path = ROOT_PATH + '/graphs/' + file_name
             if algorithm == ALGORITHM_1:
                 cluster_labels, seed = spectral_clustering1(path)
             elif algorithm == ALGORITHM_2:
@@ -43,6 +47,7 @@ comp_files = ['ca-GrQc.txt', 'Oregon-1.txt', 'soc-Epinions1.txt', 'web-NotreDame
 ptest_files = ['test1.txt', 'test2.txt', 'test3.txt']
 
 if __name__ == "__main__":
+
     if len(sys.argv[1:]) is 2:
         files = str(sys.argv[1])
         algorithm = int(sys.argv[2])

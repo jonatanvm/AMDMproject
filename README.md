@@ -1,8 +1,45 @@
 # AMDMproject
 Algorithmic methods for data mining course project
 
+# How to use
 
-# Algortihm
+##### Run competition files
+
+> python main.py comp _algnum_
+
+##### Run test files
+
+> python main.py test _algnum_
+
+##### Run private test files
+
+> python main.py ptest _algnum_
+
+##### Run single file
+Graph has to be in the graphs directory
+
+> python main.py ca-AstroPh.output _algnum_
+
+##### Algorithm param _algnum_
+
+Takes values:  
+**1** = unnormalized spectral partitioning with k-means  
+**2** = normalized spectral partitioning with k-means  
+**3** = unnormalized sparse spectral partitioning with custom nk-means++  
+**4** = normalized sparse spectral partitioning with custom nk-means++  
+
+Example:
+> python main.py ca-AstroPh.output 4
+
+__normalized__ and __unnormalized__ refers to how the laplacian and eigenvalue decomposition is calculated.  
+
+**nk-means++** is a custom k-means++ algorithm which runs k-means n times and returns the clustering with the best objective function.
+
+
+# Objective function
+
+
+# Algorithm
 
 ## Basic steps in algorithm
 
