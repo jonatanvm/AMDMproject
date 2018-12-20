@@ -166,8 +166,8 @@ def random_k_means_pp(q, i, file_name, original, data, k, num_iters=300, tol=1e-
     seed = np.random.randint(1000000)
     print(seed)
     old_centroids, clusters = k_means_pp(data, k, random_seed=seed, num_iters=num_iters, tol=tol)
-    output_name = output('temp/' + file_name + str(seed), clusters)
-    value = calculate_value(output_name, original)
+    #output_name = output('temp/' + file_name + str(seed), clusters)
+    value = calculate_value(original, clusters)
     q.append((value, i, seed, clusters))
 
 

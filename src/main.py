@@ -31,11 +31,11 @@ def run_all(loc, files, algorithm, out=True):
             elif algorithm == ALGORITHM_6:
                 cluster_labels = custom_sparse_spectral_clustering1(loc, file, e_mode='eigsh')
             elif algorithm == ALGORITHM_7:
-                cluster_labels = custom_sparse_spectral_clustering2(loc, file, e_mode='lobpcg')
+                cluster_labels = custom_sparse_spectral_clustering2(loc, file, e_mode='eigsh')
 
             if out and cluster_labels.any():
-                output_name = output(file.split(".")[0], cluster_labels)
-                calculate_value(output_name, loc + file)
+                output(file.split(".")[0], cluster_labels)
+                calculate_value(loc + file, cluster_labels)
             print("Finished with %s \n" % file)
         except MemoryError:
             print("Ran out of memory!")
@@ -62,5 +62,5 @@ if __name__ == "__main__":
             sys.exit()
     else:
         # run_all('../graphs/', test_files, ALGORITHM_7, True)
-        # run_all('../graph_tests/', ptest_files, ALGORITHM_7, False)
+        # run_all('../graph_tests/', ptest_files, ALGORITHM_1, True)
         run_all('../graphs_competition/', comp_files, ALGORITHM_7, True)
