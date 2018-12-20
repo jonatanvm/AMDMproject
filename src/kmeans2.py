@@ -1,4 +1,5 @@
-from queue import PriorityQueue
+from multiprocessing import Process, Manager
+from time import time
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -6,37 +7,15 @@ import numpy as np
 from calculate_comp_value import calculate_value
 from main import output
 
-cmpd = ['orangered', 'dodgerblue', 'springgreen']
-cmpcent = ['red', 'darkblue', 'limegreen']
-
-
-def plotting(data, centroids=None, clusters=None):
-    # this function will later on be used for plotting the clusters and centroids. But now we use it to just make a scatter plot of the data
-    # Input: the data as an array, cluster means (centroids), cluster assignemnts in {0,1,...,k-1}
-    # Output: a scatter plot of the data in the clusters with cluster means
-    plt.figure(figsize=(5.75, 5.25))
-    plt.style.use('ggplot')
-    plt.title("Data")
-
-    alp = 0.5  # data alpha
-    dt_sz = 20  # data point size
-    cent_sz = 130  # centroid sz
-
-    if centroids is None and clusters is None:
-        plt.scatter(data[:, 0], data[:, 1], s=dt_sz, alpha=alp)
-    if centroids is not None and clusters is None:
-        plt.scatter(data[:, 0], data[:, 1], s=dt_sz, alpha=alp)
-        plt.scatter(centroids[:, 0], centroids[:, 1], marker="x", s=cent_sz)
-    if centroids is not None and clusters is not None:
-        plt.scatter(data[:, 0], data[:, 1], s=dt_sz, alpha=alp)
-        plt.scatter(centroids[:, 0], centroids[:, 1], marker="x", s=cent_sz)
-    if centroids is None and clusters is not None:
-        plt.scatter(data[:, 0], data[:, 1], s=dt_sz, alpha=alp)
-
-    plt.show()
-
 
 def dist(x, y, yy):
+    """
+    Calculate distance in an optimized way.
+    :param x: centroids
+    :param y: data points
+    :param yy: precomputed y-squared
+    :return: Distances between data points and clusters
+    """
     h = (x * x).sum(axis=1).T
     h = h[:, np.newaxis]
     j = np.dot(x, y.T)
@@ -47,9 +26,19 @@ def dist(x, y, yy):
     return res
 
 
-def select_centroids(data, k, random_seed=1):
-    # INPUT: N x d data array, k number of clusters.
-    # OUTPUT: k x d array of k randomly assigned mean vectors with d dimensions.
+def select_centroids(data, k, random_seed=1, debug=False):
+    """
+    Initialize centroids using k-means++ algorithm.
+    :param data: data
+    :param k: amount of clusters
+    :param random_seed: random seed
+    :param debug: Show running time of algorithm; true or false
+    :return: centroids
+    """
+
+    if debug:
+        print("select_centroids")
+        start = time()
 
     np.random.seed(seed=random_seed)
 
@@ -74,62 +63,138 @@ def select_centroids(data, k, random_seed=1):
             if r < sum:
                 centroids[i] = data[j]
                 break
+    if debug:
+        print("Finished after %.2f seconds" % (time() - start))
 
     return np.array(centroids)
 
 
-def assign_points(data, centroids):
-    # INPUT: N x d data array, k x d centroids array.
-    # OUTPUT: N x 1 array of cluster assignments in {0,...,k-1}.
-    # print("assign_points")
-    # start = time()
+def assign_points(data, centroids, debug=False):
+    """
+    Assign clusters to points.
+    :param data: data points.
+    :param centroids: centroid locations.
+    :param debug: Show running time of algorithm; true or false
+    :return: cluster assignments.
+    """
+    if debug:
+        print("assign_points")
+        start = time()
     clusters = np.array([np.argmin(np.linalg.norm(d - centroids, axis=1)) for d in data], dtype=np.int32)
-    # print("Finished after %.2f seconds" % (time() - start))
+    if debug:
+        print("Finished after %.2f seconds" % (time() - start))
     return clusters
 
 
-def move_centroids(data, old_centroids, new_centroids, clusters):
-    # print("move_centroids")
-    # start = time()
+def move_centroids(data, old_centroids, new_centroids, clusters, debug=False):
+    """
+    Calculate new centroid positions.
+    :param data: data
+    :param old_centroids: old centroids
+    :param new_centroids: new centroids
+    :param clusters:
+    :param debug: Show running time of algorithm; true or false
+    :return: new centroids.
+    """
+    if debug:
+        print("move_centroids")
+        start = time()
+
     for c in range(old_centroids.shape[0]):
         new_centroids[c] = np.array([np.mean(data[clusters == c], axis=0)])
-    # print("Finished after %.2f seconds" % (time() - start))
+
+    if debug:
+        print("Finished after %.2f seconds" % (time() - start))
 
     return new_centroids
 
 
-def nk_means_pp(file_name, original, data, k, n=10, num_iters=300, tol=1e-4, plot=False):
-    q = PriorityQueue()
+def nk_means_pp(file_name, original, data, k, n=10, n_jobs=10, num_iters=300, tol=1e-4):
+    """
+    Run k-means n times in parallel.
+
+    :param file_name: Name of file
+    :param original: Path to graph
+    :param data: eigenvectors of laplacian
+    :param k: number of clusters
+    :param n: number of times to run kmeans and number of parallel processes.
+    :param num_iters: max number of iterations.
+    :param tol: max error of kmeans
+    :return: best clusters labels
+    """
+    q = Manager().list()
+    processes = []
+    # Parallelize across n processes for faster multi-threaded computing
     for i in range(n):
-        seed = np.random.randint(1000000)
-        old_centroids, clusters = k_means_pp(data, k, random_seed=seed, num_iters=num_iters, tol=tol, plot=plot)
-        output_name = output('temp/' + file_name + str(seed), clusters)
-        value = calculate_value(output_name, original)
-        q.put((value, i, seed, clusters))
-    best = q.get()
+        p = Process(target=random_k_means_pp, args=(q, i, file_name, original, data, k, num_iters, tol))
+        processes.append(p)
+
+    # Start processes
+    for p in processes:
+        p.start()
+
+    # Wait for all processes to finnish
+    for p in processes:
+        p.join()
+    print("Join process")
+
+    for p in processes:
+        if p.is_alive():
+            p.terminate()
+    print("Terminate")
+
+    # Get best result
+    best = min(q, key=lambda t: t[0])
     _, _, _, best_clusters = best
     print("Best output: " + str(best))
     return best_clusters
 
 
-def k_means_pp(data, k, random_seed=1, num_iters=300, tol=1e-4, plot=False, debug=False):
-    # INPUT: N x d data array, k number of clusters, number of iterations, boolean plot.
-    # OUTPUT: N x 1 array of cluster assignments.
+def random_k_means_pp(q, i, file_name, original, data, k, num_iters=300, tol=1e-4):
+    """
+    Helper method for running k-means in parallel.
+
+    :param q: Priority queue to add results to.
+    :param i: Process id.
+    :param file_name: Name of file
+    :param original: Path to graph
+    :param data: eigenvectors of laplacian
+    :param k: number of clusters
+    :param num_iters: max number of iterations.
+    :param tol: max error of kmeans
+    :return:
+    """
+    np.random.seed()
+    seed = np.random.randint(1000000)
+    print(seed)
+    old_centroids, clusters = k_means_pp(data, k, random_seed=seed, num_iters=num_iters, tol=tol)
+    output_name = output('temp/' + file_name + str(seed), clusters)
+    value = calculate_value(output_name, original)
+    q.append((value, i, seed, clusters))
+
+
+def k_means_pp(data, k, random_seed=1, num_iters=300, tol=1e-4, debug=False):
+    """
+
+    :param data: eigenvectors of laplacian
+    :param k: number of clusters
+    :param random_seed: Random seed
+    :param num_iters: max number of iterations.
+    :param tol: max error of k-means
+    :param debug: true or false for printing debug texts.
+    :return: centroids and clusters
+    """
     if debug:
         print("Select centroids")
-    old_centroids = select_centroids(data, k, random_seed)
+    old_centroids = select_centroids(data, k, random_seed, debug=debug)
     new_centroids = np.zeros(shape=old_centroids.shape)
 
     i = 0
     error = np.inf
     while i < num_iters and error > tol:
-        clusters = assign_points(data, old_centroids)
+        clusters = assign_points(data, old_centroids, debug=debug)
 
-        # plotting
-        if plot is True and i < 10:
-            plotting(data, old_centroids, clusters)
-
-        move_centroids(data, old_centroids, new_centroids, clusters)
+        move_centroids(data, old_centroids, new_centroids, clusters, debug=debug)
 
         error = np.linalg.norm(new_centroids - old_centroids)
         if debug:
@@ -141,6 +206,3 @@ def k_means_pp(data, k, random_seed=1, num_iters=300, tol=1e-4, plot=False, debu
         print("Converged after %s iterations" % i)
     plt.show()
     return old_centroids, clusters
-
-# centroids, clusters = k_means(data, 2, plot=False)
-# print("The final cluster mean values are:", centroids)

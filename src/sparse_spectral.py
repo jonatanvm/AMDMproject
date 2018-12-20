@@ -130,7 +130,7 @@ def custom_sparse_spectral_clustering2(loc, graph_src, k_user=None, e_mode='eigs
     U = np.real(e_vectors)
     print("Calculating Kmeans")
     start = time()
-    clusters_lables = nk_means_pp(graph_src.split(".")[0], loc + graph_src, U[:, :k], k)
+    clusters_lables = nk_means_pp(graph_src.split(".")[0], loc + graph_src, U[:, :k], k, n=4)
     print("Finished after %.2f seconds" % (time() - start))
     print(clusters_lables)
     return clusters_lables
