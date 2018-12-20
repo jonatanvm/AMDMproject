@@ -4,7 +4,7 @@ from time import time
 import matplotlib.pyplot as plt
 import numpy as np
 
-from calculate_comp_value import calculate_value
+from calculate_comp_value import calculate_objective_function
 
 
 def dist(x, y, yy):
@@ -164,7 +164,7 @@ def random_k_means_pp(q, i, path_to_graph, data, k, num_iters=300, tol=1e-4):
     np.random.seed()
     seed = np.random.randint(1000000)
     old_centroids, clusters = k_means_pp(data, k, random_seed=seed, num_iters=num_iters, tol=tol)
-    value = calculate_value(path_to_graph, clusters)
+    value = calculate_objective_function(path_to_graph, clusters)
     print("Process %s finished with competition value %.2f with seed %s" % (i, value, seed))
     q.append((value, i, seed, clusters))
 

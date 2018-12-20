@@ -3,7 +3,7 @@ import sys
 
 import pandas as pd
 
-from calculate_comp_value import calculate_value
+from calculate_comp_value import calculate_objective_function
 from sparse_spectral import *
 from spectral import *
 
@@ -12,10 +12,16 @@ ROOT_PATH = os.path.dirname(MODULE_PATH)
 
 
 def output(name, values):
+    """
+    Output the cluster labels to a file <name>.output
+    :param name: of file
+    :param values: cluster labels
+    :return: path to file.
+    """
     df = pd.DataFrame(values)
-    file_name = ROOT_PATH + '/output/' + name + '.output'
-    df.to_csv(file_name, index=True, header=False, sep=" ")
-    return file_name
+    output_path = ROOT_PATH + '/output/' + name + '.output'
+    df.to_csv(output_path, index=True, header=False, sep=" ")
+    return output_path
 
 
 def run_all(files, algorithm, out=True):
@@ -34,7 +40,7 @@ def run_all(files, algorithm, out=True):
 
             if out and cluster_labels.any():
                 output(file_name.split(".")[0] + "-" + str(seed), cluster_labels)
-                value = calculate_value(path, cluster_labels)
+                value = calculate_objective_function(path, cluster_labels)
                 print("Competition value: %s" % value)
             print("Finished with %s \n" % file_name)
         except MemoryError:
@@ -47,7 +53,6 @@ comp_files = ['ca-GrQc.txt', 'Oregon-1.txt', 'soc-Epinions1.txt', 'web-NotreDame
 ptest_files = ['test1.txt', 'test2.txt', 'test3.txt']
 
 if __name__ == "__main__":
-
     if len(sys.argv[1:]) is 2:
         files = str(sys.argv[1])
         algorithm = int(sys.argv[2])

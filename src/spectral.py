@@ -1,6 +1,5 @@
 from time import time
 
-import matplotlib.pyplot as plt
 import numpy as np
 from scipy.sparse.linalg import eigsh
 from sklearn.cluster import KMeans
@@ -19,6 +18,13 @@ ALGORITHM_7 = 7
 
 
 def spectral_clustering1(graph_src, k_user=None):
+    """
+    Run the spectral clustering algorithm 1 using the k-means  algorithm.
+
+    :param graph_src: path to graph.
+    :param k_user: user specified number of clusters (reads number of clusters from graph as default).
+    :return: cluster labels and seed which resulted in the clustering
+    """
     print("Reading graph: " + graph_src)
     start = time()
     A, D, k, header = read_graph(graph_src)
@@ -55,6 +61,13 @@ def spectral_clustering1(graph_src, k_user=None):
 
 
 def spectral_clustering2(graph_src, k_user=None):
+    """
+    Run the spectral clustering algorithm 2 using the k-means  algorithm.
+
+    :param graph_src: path to graph.
+    :param k_user: user specified number of clusters (reads number of clusters from graph as default).
+    :return: cluster labels and seed which resulted in the clustering
+    """
     print("Reading graph: " + graph_src)
     start = time()
     A, D, k, header = read_graph(graph_src)

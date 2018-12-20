@@ -5,6 +5,12 @@ from scipy.sparse import coo_matrix
 
 
 def read_graph_sparse(file_path, return_D=False):
+    """
+    Read a graph and form the laplacian in sparse matrix format.
+    :param file_path: path of graph.
+    :param return_D: boolean indicating whether to return the degree matrix D or not.
+    :return: sparse Laplacian matrix
+    """
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html#scipy.sparse.coo_matrix
     # https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.sparse.linalg.eigs.html#scipy.sparse.linalg.eigs
     with open(file_path, 'r') as graph:
@@ -63,9 +69,6 @@ def read_graph_sparse(file_path, return_D=False):
                 if return_D:
                     row_d[i] = i
                     col_d[i] = i
-        # print(row)
-        # print(col)
-        # print(data)
         L = coo_matrix((data, (row, col)), shape=(int(nVertices), int(nVertices)))
         if return_D:
             D = coo_matrix((degrees, (row_d, col_d)), shape=(int(nVertices), int(nVertices)))
@@ -75,6 +78,12 @@ def read_graph_sparse(file_path, return_D=False):
 
 
 def read_graph(file_name):
+    """
+    Read graph and return its adjacency matrix and degree matrix as well as the number of clusters k and
+    header specified in the graph file.
+    :param file_name: path of graph.
+    :return: adjacency matrix, degree matrix, number of clusters, file header.
+    """
     with open(file_name, 'r') as graph:
         line = graph.readline().split(" ")
         k = None

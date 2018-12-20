@@ -8,6 +8,13 @@ from read_graph import read_graph_sparse
 
 
 def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh'):
+    """
+    Run the spectral clustering algorithm 1 using the nk-means++ algorithm.
+    :param graph_src: path to graph.
+    :param k_user: user specified number of clusters (reads number of clusters from graph as default).
+    :param e_mode: type of eigenvalue decomposition algorithm.
+    :return: cluster labels and seed which resulted in the clustering
+    """
     print("Reading sparse graph: " + graph_src)
     start = time()
     L, _, k, header = read_graph_sparse(graph_src, False)
@@ -40,6 +47,13 @@ def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh'):
 
 
 def custom_sparse_spectral_clustering2(graph_src, k_user=None, e_mode='eigsh'):
+    """
+    Run the spectral clustering algorithm 2 using the nk-means++ algorithm.
+    :param graph_src: path to graph.
+    :param k_user: user specified number of clusters (reads number of clusters from graph as default).
+    :param e_mode: type of eigenvalue decomposition algorithm.
+    :return: cluster labels and seed which resulted in the clustering
+    """
     print("Reading sparse graph: " + graph_src)
     start = time()
     L, D, k, header = read_graph_sparse(graph_src, True)
