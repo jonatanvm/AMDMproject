@@ -21,7 +21,6 @@ def read_graph_sparse(loc, file_name, return_D=False):
             row_d = np.zeros(int(nVertices))  # slower than empty
             col_d = np.zeros(int(nVertices))
         degrees = np.zeros(int(nVertices))
-        read_edges = {}
         ind = 0
         dict = defaultdict(list)
         while True:
@@ -31,13 +30,13 @@ def read_graph_sparse(loc, file_name, return_D=False):
             v0, v1 = line.split(" ")
             v0, v1 = int(v0), int(v1)
 
-            if(v0 < v1):
+            if v0 < v1:
                 smaller, bigger = v0, v1
             else:
                 smaller, bigger = v1, v0
 
             values = dict.get(smaller)
-            if values == None or bigger not in values:
+            if values is None or bigger not in values:
                 degrees[smaller] += 1
                 degrees[bigger] += 1
             dict[smaller].append(bigger)
@@ -93,13 +92,13 @@ def read_graph(loc, file_name):
             v0, v1 = line.split(" ")
             v0, v1 = int(v0), int(v1)
 
-            if (v0 < v1):
+            if v0 < v1:
                 smaller, bigger = v0, v1
             else:
                 smaller, bigger = v1, v0
 
             values = dict.get(smaller)
-            if values == None or bigger not in values:
+            if values is None or bigger not in values:
                 degrees[smaller] += 1
                 degrees[bigger] += 1
             dict[smaller].append(bigger)

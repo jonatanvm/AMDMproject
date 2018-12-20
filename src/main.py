@@ -35,7 +35,8 @@ def run_all(loc, files, algorithm, out=True):
 
             if out and cluster_labels.any():
                 output(file.split(".")[0], cluster_labels)
-                calculate_value(loc + file, cluster_labels)
+                value = calculate_value(loc + file, cluster_labels)
+                print("Competition value: %s" % value)
             print("Finished with %s \n" % file)
         except MemoryError:
             print("Ran out of memory!")

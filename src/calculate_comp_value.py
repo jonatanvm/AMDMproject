@@ -23,5 +23,4 @@ def calculate_value(original_file, cluster_labels):
                 edgeAreNotInSameVertice += 1
 
         value = edgeAreNotInSameVertice / min_value
-        print("value for competition = " + str(value))
         return value

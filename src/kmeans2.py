@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from calculate_comp_value import calculate_value
-from main import output
 
 
 def dist(x, y, yy):
@@ -109,12 +108,12 @@ def move_centroids(data, old_centroids, new_centroids, clusters, debug=False):
     return new_centroids
 
 
-def nk_means_pp(file_name, original, data, k, n=10, n_jobs=10, num_iters=300, tol=1e-4):
+def nk_means_pp(path_to_graph, data, k, n=10, num_iters=300, tol=1e-4):
     """
     Run k-means n times in parallel.
 
     :param file_name: Name of file
-    :param original: Path to graph
+    :param path_to_graph: Path to graph
     :param data: eigenvectors of laplacian
     :param k: number of clusters
     :param n: number of times to run kmeans and number of parallel processes.
@@ -126,7 +125,7 @@ def nk_means_pp(file_name, original, data, k, n=10, n_jobs=10, num_iters=300, to
     processes = []
     # Parallelize across n processes for faster multi-threaded computing
     for i in range(n):
-        p = Process(target=random_k_means_pp, args=(q, i, file_name, original, data, k, num_iters, tol))
+        p = Process(target=random_k_means_pp, args=(q, i, path_to_graph, data, k, num_iters, tol))
         processes.append(p)
 
     # Start processes
@@ -148,14 +147,14 @@ def nk_means_pp(file_name, original, data, k, n=10, n_jobs=10, num_iters=300, to
     return best_clusters
 
 
-def random_k_means_pp(q, i, file_name, original, data, k, num_iters=300, tol=1e-4):
+def random_k_means_pp(q, i, path_to_graph, data, k, num_iters=300, tol=1e-4):
     """
     Helper method for running k-means in parallel.
 
     :param q: Priority queue to add results to.
     :param i: Process id.
     :param file_name: Name of file
-    :param original: Path to graph
+    :param path_to_graph: Path to graph
     :param data: eigenvectors of laplacian
     :param k: number of clusters
     :param num_iters: max number of iterations.
@@ -164,10 +163,9 @@ def random_k_means_pp(q, i, file_name, original, data, k, num_iters=300, tol=1e-
     """
     np.random.seed()
     seed = np.random.randint(1000000)
-    print(seed)
     old_centroids, clusters = k_means_pp(data, k, random_seed=seed, num_iters=num_iters, tol=tol)
-    #output_name = output('temp/' + file_name + str(seed), clusters)
-    value = calculate_value(original, clusters)
+    value = calculate_value(path_to_graph, clusters)
+    print("Process %s finished with competition value %s with seed %s" % (i, value, seed))
     q.append((value, i, seed, clusters))
 
 
