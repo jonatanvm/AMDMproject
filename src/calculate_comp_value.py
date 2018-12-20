@@ -1,6 +1,12 @@
 
 def calculate_value(original_file, cluster_labels):
-
+    """
+        Calculate goodness of partition, dividing number of edges between two vertices
+        which are not in same cluster by number of vertices in smallest cluster.
+        :param original_file: path for edges in graph
+        :param cluster_labels: list of cluster labels for each vertice
+        :return: Calculate goodness of partition
+    """
     with open(original_file, 'r') as graph:
         _, _, edges, lines, k = graph.readline().split(" ")
 
