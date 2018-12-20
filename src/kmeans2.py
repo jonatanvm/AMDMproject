@@ -142,9 +142,9 @@ def nk_means_pp(path_to_graph, data, k, n=10, num_iters=300, tol=1e-4):
 
     # Get best result
     best = min(q, key=lambda t: t[0])
-    _, _, _, best_clusters = best
+    _, _, seed, best_clusters = best
     print("Best output: " + str(best))
-    return best_clusters
+    return best_clusters, seed
 
 
 def random_k_means_pp(q, i, path_to_graph, data, k, num_iters=300, tol=1e-4):
@@ -165,7 +165,7 @@ def random_k_means_pp(q, i, path_to_graph, data, k, num_iters=300, tol=1e-4):
     seed = np.random.randint(1000000)
     old_centroids, clusters = k_means_pp(data, k, random_seed=seed, num_iters=num_iters, tol=tol)
     value = calculate_value(path_to_graph, clusters)
-    print("Process %s finished with competition value %s with seed %s" % (i, value, seed))
+    print("Process %s finished with competition value %.2f with seed %s" % (i, value, seed))
     q.append((value, i, seed, clusters))
 
 

@@ -14,30 +14,25 @@ def output(name, values):
     return file_name
 
 
-def run_all(loc, files, algorithm, out=True):
-    for file in files:
+def run_all(files, algorithm, out=True):
+    for file_name in files:
         try:
             cluster_labels = None
+            path = '../graphs/' + file_name
             if algorithm == ALGORITHM_1:
-                cluster_labels = spectral_clustering1(loc, file)
+                cluster_labels, seed = spectral_clustering1(path)
             elif algorithm == ALGORITHM_2:
-                cluster_labels = spectral_clustering2(loc, file)
+                cluster_labels, seed = spectral_clustering2(path)
             elif algorithm == ALGORITHM_3:
-                cluster_labels = spectral_clustering3(loc, file)
+                cluster_labels, seed = custom_sparse_spectral_clustering1(path, e_mode='eigsh')
             elif algorithm == ALGORITHM_4:
-                cluster_labels = sparse_spectral_clustering1(loc, file)
-            elif algorithm == ALGORITHM_5:
-                cluster_labels = sparse_spectral_clustering2(loc, file)
-            elif algorithm == ALGORITHM_6:
-                cluster_labels = custom_sparse_spectral_clustering1(loc, file, e_mode='eigsh')
-            elif algorithm == ALGORITHM_7:
-                cluster_labels = custom_sparse_spectral_clustering2(loc, file, e_mode='lobpcg')
+                cluster_labels, seed = custom_sparse_spectral_clustering2(path, e_mode='lobpcg')
 
             if out and cluster_labels.any():
-                output(file.split(".")[0], cluster_labels)
-                value = calculate_value(loc + file, cluster_labels)
+                output(file_name.split(".")[0] + "-" + str(seed), cluster_labels)
+                value = calculate_value(path, cluster_labels)
                 print("Competition value: %s" % value)
-            print("Finished with %s \n" % file)
+            print("Finished with %s \n" % file_name)
         except MemoryError:
             print("Ran out of memory!")
             pass
@@ -46,22 +41,24 @@ def run_all(loc, files, algorithm, out=True):
 test_files = ['ca-HepTh.txt', 'ca-HepPh.txt', 'ca-AstroPh.txt', 'ca-CondMat.txt']
 comp_files = ['ca-GrQc.txt', 'Oregon-1.txt', 'soc-Epinions1.txt', 'web-NotreDame.txt', 'roadNet-CA.txt', ]
 ptest_files = ['test1.txt', 'test2.txt', 'test3.txt']
-ptest_files2 = ['test3.txt']
 
 if __name__ == "__main__":
     if len(sys.argv[1:]) is 2:
         files = str(sys.argv[1])
         algorithm = int(sys.argv[2])
         if files == "comp":
-            run_all('../graphs_competition/', comp_files, algorithm)
+            run_all(comp_files, algorithm)
         elif files == "ptest":
-            run_all('../graph_tests/', ptest_files, algorithm)
+            run_all(ptest_files, algorithm)
         elif files == "test":
-            run_all('../graphs/', test_files, algorithm)
+            run_all(test_files, algorithm)
+        elif files in test_files or files in comp_files or files in ptest_files:
+            run_all([files], algorithm)
         else:
             print("Not enough arguments.")
             sys.exit()
+
     else:
-        # run_all('../graphs/', test_files, ALGORITHM_7, True)
-        # run_all('../graph_tests/', ptest_files, ALGORITHM_1, True)
-        run_all('../graphs_competition/', comp_files, ALGORITHM_7, True)
+        # run_all(test_files, ALGORITHM_7, True)
+        run_all(ptest_files, ALGORITHM_4, True)
+        # run_all(comp_files, ALGORITHM_4, True)
