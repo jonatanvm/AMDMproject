@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.sparse import coo_matrix
-
+from collections import defaultdict
 
 def read_graph_sparse(loc, file_name, return_D=False):
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html#scipy.sparse.coo_matrix
@@ -22,14 +22,23 @@ def read_graph_sparse(loc, file_name, return_D=False):
             col_d = np.zeros(int(nVertices))
         degrees = np.zeros(int(nVertices))
         ind = 0
+        dict = defaultdict(list)
         while True:
             line = graph.readline()
             if not line:
                 break
             v0, v1 = line.split(" ")
             v0, v1 = int(v0), int(v1)
-            degrees[v0] += 1
-            degrees[v1] += 1
+            if(v0 < v1):
+                smaller, bigger = v0, v1
+            else:
+                smaller, bigger = v1, v0
+
+            values = dict.get(smaller)
+            if values == None or bigger not in values:
+                degrees[smaller] += 1
+                degrees[bigger] += 1
+            dict[smaller].append(bigger)
 
             row[ind] = v0
             col[ind] = v1
@@ -40,6 +49,9 @@ def read_graph_sparse(loc, file_name, return_D=False):
             col[ind] = v0
             data[ind] = -1
             ind += 1
+
+        dict = None
+
         for i in range(int(nVertices)):
             if degrees[i] > 0:
                 row[ind + i] = i
@@ -70,6 +82,7 @@ def read_graph(loc, file_name):
         header = ['#', str(name), str(nVertices), str(nEdges), str(k[-2])]
         matrix = np.zeros([int(nVertices), int(nVertices)])  # slower than empty
         degrees = np.zeros(int(nVertices))
+        dict = defaultdict(list)
         n_lines = 0
         while True:
             line = graph.readline()
@@ -77,11 +90,22 @@ def read_graph(loc, file_name):
                 break
             v0, v1 = line.split(" ")
             v0, v1 = int(v0), int(v1)
-            degrees[v0] += 1
-            degrees[v1] += 1
+
+            if (v0 < v1):
+                smaller, bigger = v0, v1
+            else:
+                smaller, bigger = v1, v0
+
+            values = dict.get(smaller)
+            if values == None or bigger not in values:
+                degrees[smaller] += 1
+                degrees[bigger] += 1
+            dict[smaller].append(bigger)
+
             matrix[v0][v1] = 1
             matrix[v1][v0] = 1
             n_lines += 2
 
+        dict = None
         # assert np.sum(matrix) == n_lines  # Check all lines read
         return matrix, np.diag(degrees), int(k), header
