@@ -36,7 +36,7 @@ def output(name, values, header):
     return output_path
 
 
-def run_all(files, algorithm, out=True):
+def run_all(files, algorithm, e_mode, n, out=True):
     for file_name in files:
         try:
             cluster_labels = None
@@ -46,9 +46,9 @@ def run_all(files, algorithm, out=True):
             elif algorithm == ALGORITHM_2:
                 cluster_labels, seed, header = spectral_clustering2(path)
             elif algorithm == ALGORITHM_3:
-                cluster_labels, seed, header = custom_sparse_spectral_clustering1(path, e_mode='eigsh')
+                cluster_labels, seed, header = custom_sparse_spectral_clustering1(path, e_mode=e_mode, n=n)
             elif algorithm == ALGORITHM_4:
-                cluster_labels, seed, header = custom_sparse_spectral_clustering2(path, e_mode='lobpcg')
+                cluster_labels, seed, header = custom_sparse_spectral_clustering2(path, e_mode=e_mode, n=n)
 
             if out and cluster_labels.any():
                 output(file_name.split(".")[0] + "-" + str(seed), cluster_labels, header)
@@ -65,22 +65,34 @@ comp_files = ['ca-GrQc.txt', 'Oregon-1.txt', 'soc-Epinions1.txt', 'web-NotreDame
 ptest_files = ['test1.txt', 'test2.txt', 'test3.txt']
 
 if __name__ == "__main__":
-    if len(sys.argv[1:]) is 2:
+    n_args = len(sys.argv[1:])
+    if n_args > 2:
         files = str(sys.argv[1])
         algorithm = int(sys.argv[2])
-        if files == "comp":
-            run_all(comp_files, algorithm)
-        elif files == "ptest":
-            run_all(ptest_files, algorithm)
-        elif files == "test":
-            run_all(test_files, algorithm)
-        elif files in test_files or files in comp_files or files in ptest_files:
-            run_all([files], algorithm)
+
+        if n_args is 2:
+            e_mode = 'eigsh'
+            n = 10
+        if n_args is 4:
+            e_mode = str(sys.argv[3])
+            n = int(sys.argv[4])
         else:
-            print("Not enough arguments.")
+            print("Invalid parameter line.")
+            sys.exit()
+
+        if files == "comp":
+            run_all(comp_files, algorithm, e_mode, n)
+        elif files == "ptest":
+            run_all(ptest_files, algorithm, e_mode, n)
+        elif files == "test":
+            run_all(test_files, algorithm, e_mode, n)
+        elif files in test_files or files in comp_files or files in ptest_files:
+            run_all([files], algorithm, e_mode, n)
+        else:
+            print("Invalid parameter line.")
             sys.exit()
 
     else:
-        run_all(test_files, ALGORITHM_4, True)
-        run_all(ptest_files, ALGORITHM_4, True)
+        # run_all(test_files, ALGORITHM_4, 'eigsh', 10)
+        run_all(ptest_files, ALGORITHM_4, 'eigsh', 10)
         # run_all(comp_files, ALGORITHM_1, True)

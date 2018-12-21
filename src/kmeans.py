@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -52,7 +51,6 @@ def k_means(data, k, random_seed=1, num_iters=10, plot=True):
         ass = assigned
         i += 1
 
-    plt.show()
     return centroids, clusters
 
 # centroids, clusters = k_means(data, 2, plot=False)

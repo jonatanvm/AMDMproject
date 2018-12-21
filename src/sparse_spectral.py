@@ -7,7 +7,7 @@ from kmeans2 import nk_means_pp
 from read_graph import read_graph_sparse
 
 
-def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh'):
+def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh', n=10):
     """
     Run the spectral clustering algorithm 1 using the nk-means++ algorithm.
     :param graph_src: path to graph.
@@ -26,6 +26,7 @@ def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh'):
     # Generalized Eigen-decomposition of Laplacian matrix
     print("Calculating Eigen-decomposition")
     start = time()
+
     if e_mode == 'lobpcg':
         # Random estimations of eigenvalues
         X = np.random.rand(L.shape[0], k)
@@ -34,18 +35,19 @@ def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh'):
         e_values, e_vectors = eigsh(L, k=k, which='SA')
     else:
         raise Exception("Invalid eigen-decomposition algorithm (e_mode), either lobpcg or eigsh.")
+
     print("Finished after %.2f seconds" % (time() - start))
     L = None  # Free memory
     U = np.real(e_vectors)
     print("Calculating Kmeans")
     start = time()
-    clusters_lables, seed = nk_means_pp(graph_src, U, k)
+    clusters_lables, seed = nk_means_pp(graph_src, U, k, n=n)
     print("Finished after %.2f seconds" % (time() - start))
     print(clusters_lables)
     return clusters_lables, seed, header
 
 
-def custom_sparse_spectral_clustering2(graph_src, k_user=None, e_mode='eigsh'):
+def custom_sparse_spectral_clustering2(graph_src, k_user=None, e_mode='eigsh', n=10):
     """
     Run the spectral clustering algorithm 2 using the nk-means++ algorithm.
     :param graph_src: path to graph.
@@ -80,7 +82,7 @@ def custom_sparse_spectral_clustering2(graph_src, k_user=None, e_mode='eigsh'):
     U = np.real(e_vectors)
     print("Calculating Kmeans")
     start = time()
-    clusters_lables, seed = nk_means_pp(graph_src, U, k, n=10)
+    clusters_lables, seed = nk_means_pp(graph_src, U, k, n=n)
     print("Finished after %.2f seconds" % (time() - start))
     print(clusters_lables)
     return clusters_lables, seed, header

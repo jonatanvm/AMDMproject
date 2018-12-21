@@ -1,7 +1,6 @@
 from multiprocessing import Process, Manager
 from time import time
 
-import matplotlib.pyplot as plt
 import numpy as np
 
 from calculate_comp_value import calculate_objective_function
@@ -200,5 +199,4 @@ def k_means_pp(data, k, random_seed=1, num_iters=300, tol=1e-4, debug=False):
         i += 1
     if debug:
         print("Converged after %s iterations" % i)
-    plt.show()
     return old_centroids, clusters
