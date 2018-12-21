@@ -36,7 +36,7 @@ def output(name, values, header):
     return output_path
 
 
-def run_all(files, algorithm, e_mode, n, out=True):
+def run_all(files, algorithm, e_mode, n, n_jobs, out=True):
     for file_name in files:
         try:
             cluster_labels = None
@@ -46,9 +46,9 @@ def run_all(files, algorithm, e_mode, n, out=True):
             elif algorithm == ALGORITHM_2:
                 cluster_labels, seed, header = spectral_clustering2(path)
             elif algorithm == ALGORITHM_3:
-                cluster_labels, seed, header = custom_sparse_spectral_clustering1(path, e_mode=e_mode, n=n)
+                cluster_labels, seed, header = custom_sparse_spectral_clustering1(path, e_mode=e_mode, n=n, n_jobs=n_jobs)
             elif algorithm == ALGORITHM_4:
-                cluster_labels, seed, header = custom_sparse_spectral_clustering2(path, e_mode=e_mode, n=n)
+                cluster_labels, seed, header = custom_sparse_spectral_clustering2(path, e_mode=e_mode, n=n, n_jobs=n_jobs)
 
             if out and cluster_labels.any():
                 output(file_name.split(".")[0] + "-" + str(seed), cluster_labels, header)
@@ -73,26 +73,28 @@ if __name__ == "__main__":
         if n_args is 2:
             e_mode = 'eigsh'
             n = 10
-        if n_args is 4:
+            n_jobs = 8
+        if n_args is 5:
             e_mode = str(sys.argv[3])
             n = int(sys.argv[4])
+            n_jobs = int(sys.argv[5])
         else:
             print("Invalid parameter line.")
             sys.exit()
 
         if files == "comp":
-            run_all(comp_files, algorithm, e_mode, n)
+            run_all(comp_files, algorithm, e_mode, n, n_jobs)
         elif files == "ptest":
-            run_all(ptest_files, algorithm, e_mode, n)
+            run_all(ptest_files, algorithm, e_mode, n, n_jobs)
         elif files == "test":
-            run_all(test_files, algorithm, e_mode, n)
+            run_all(test_files, algorithm, e_mode, n, n_jobs)
         elif files in test_files or files in comp_files or files in ptest_files:
-            run_all([files], algorithm, e_mode, n)
+            run_all([files], algorithm, e_mode, n, n_jobs)
         else:
             print("Invalid parameter line.")
             sys.exit()
 
     else:
-        # run_all(test_files, ALGORITHM_4, 'eigsh', 10)
-        run_all(ptest_files, ALGORITHM_4, 'eigsh', 10)
-        # run_all(comp_files, ALGORITHM_1, True)
+        run_all(test_files, ALGORITHM_3, 'eigsh', n=30, n_jobs=10)
+        # run_all(ptest_files, ALGORITHM_4, 'eigsh', n=10, n_jobs=10)
+        # run_all(comp_files, ALGORITHM_1, 'eigsh', n=10, n_jobs=10)

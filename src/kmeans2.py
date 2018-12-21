@@ -1,4 +1,5 @@
 from multiprocessing import Process, Manager
+from multiprocessing.pool import Pool
 from time import time
 
 import numpy as np
@@ -107,7 +108,7 @@ def move_centroids(data, old_centroids, new_centroids, clusters, debug=False):
     return new_centroids
 
 
-def nk_means_pp(path_to_graph, data, k, n=10, num_iters=300, tol=1e-4):
+def nk_means_pp(path_to_graph, data, k, n=10, n_jobs=8, num_iters=300, tol=1e-4):
     """
     Run k-means n times in parallel.
 
@@ -115,29 +116,23 @@ def nk_means_pp(path_to_graph, data, k, n=10, num_iters=300, tol=1e-4):
     :param path_to_graph: Path to graph
     :param data: eigenvectors of laplacian
     :param k: number of clusters
-    :param n: number of times to run kmeans and number of parallel processes.
+    :param n: number of times to run kmeans.
+    :param n_jobs: Number of parallel processes.
     :param num_iters: max number of iterations.
     :param tol: max error of kmeans
     :return: best clusters labels
     """
     q = Manager().list()
-    processes = []
+    pool = Pool(n_jobs)
     # Parallelize across n processes for faster multi-threaded computing
     for i in range(n):
-        p = Process(target=random_k_means_pp, args=(q, i, path_to_graph, data, k, num_iters, tol))
-        processes.append(p)
+        pool.apply_async(random_k_means_pp, (q, i, path_to_graph, data, k, num_iters, tol))
 
-    # Start processes
-    for p in processes:
-        p.start()
+    # Prevent more tasks from being added
+    pool.close()
 
-    # Wait for all processes to finnish
-    for p in processes:
-        p.join()
-
-    for p in processes:
-        if p.is_alive():
-            p.terminate()
+    # Wait for all tasks to finnish
+    pool.join()
 
     # Get best result
     best = min(q, key=lambda t: t[0])
