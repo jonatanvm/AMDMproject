@@ -88,5 +88,5 @@ Seed: 952417
 Seed: 987761
 * web-NotreDame: custom sparse algo2 - 0.262  
 Seed: 361760
-* roadNet-CA: custom sparse algo2 - 12.304   
+* roadNet-CA: custom sparse algo2 - 0.379   
 Seed: 826647
