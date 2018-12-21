@@ -96,5 +96,5 @@ if __name__ == "__main__":
 
     else:
         # run_all(test_files, ALGORITHM_3, 'eigsh', n=100, n_jobs=10)
-        run_all(ptest_files, ALGORITHM_1, 'eigsh', n=1, n_jobs=10)
+        run_all(comp_files, ALGORITHM_4, 'eigsh', n=1, n_jobs=10)
         # run_all(comp_files, ALGORITHM_1, 'eigsh', n=10, n_jobs=10)
