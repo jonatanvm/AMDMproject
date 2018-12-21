@@ -57,7 +57,7 @@ __normalized__ and __unnormalized__ refers to how the laplacian and eigenvalue d
 * HepPh: custom sparse algo1 - 14.25 - 748819
 * HepTh: custom sparse algo1 - 5.6 - 380854
 * GrQc: custom sparse algo2 - 0.075
-* Oregon: custom sparse algo2 - 2.8181818181818183
+* Oregon: custom sparse algo2 - 2.8181818181818183 - 278141
 * soc-Epinions: custom sparse algo2 - 1.5714285714285714
 * web-NotreDame: custom sparse algo2 - 0.2621951219512195
 * roadNet-CA: custom sparse algo2 - 12.3043
