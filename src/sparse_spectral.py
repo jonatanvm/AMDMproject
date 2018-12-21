@@ -7,7 +7,7 @@ from kmeans2 import nk_means_pp
 from read_graph import read_graph_sparse
 
 
-def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh', n=10, n_jobs=8):
+def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh', n=10, n_jobs=8, seed=None):
     """
     Run the spectral clustering algorithm 1 using the nk-means++ algorithm.
     :param graph_src: path to graph.
@@ -41,13 +41,13 @@ def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh', n
     U = np.real(e_vectors)
     print("Calculating Kmeans")
     start = time()
-    clusters_lables, seed = nk_means_pp(graph_src, U, k, n=n, n_jobs=n_jobs)
+    clusters_lables, s = nk_means_pp(graph_src, U, k, n=n, n_jobs=n_jobs, seed=seed)
     print("Finished after %.2f seconds" % (time() - start))
     print(clusters_lables)
-    return clusters_lables, seed, header
+    return clusters_lables, s, header
 
 
-def custom_sparse_spectral_clustering2(graph_src, k_user=None, e_mode='eigsh', n=10, n_jobs=8):
+def custom_sparse_spectral_clustering2(graph_src, k_user=None, e_mode='eigsh', n=10, n_jobs=8, seed=None):
     """
     Run the spectral clustering algorithm 2 using the nk-means++ algorithm.
     :param graph_src: path to graph.
@@ -82,7 +82,7 @@ def custom_sparse_spectral_clustering2(graph_src, k_user=None, e_mode='eigsh', n
     U = np.real(e_vectors)
     print("Calculating Kmeans")
     start = time()
-    clusters_lables, seed = nk_means_pp(graph_src, U, k, n=n, n_jobs=n_jobs)
+    clusters_lables, s = nk_means_pp(graph_src, U[:, 1:k], k, n=n, n_jobs=n_jobs, seed=seed)
     print("Finished after %.2f seconds" % (time() - start))
     print(clusters_lables)
-    return clusters_lables, seed, header
+    return clusters_lables, s, header

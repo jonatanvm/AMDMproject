@@ -1,4 +1,4 @@
-from multiprocessing import Process, Manager
+from multiprocessing import Manager
 from multiprocessing.pool import Pool
 from time import time
 
@@ -108,7 +108,7 @@ def move_centroids(data, old_centroids, new_centroids, clusters, debug=False):
     return new_centroids
 
 
-def nk_means_pp(path_to_graph, data, k, n=10, n_jobs=8, num_iters=300, tol=1e-4):
+def nk_means_pp(path_to_graph, data, k, n=10, n_jobs=8, num_iters=300, tol=1e-4, seed=None):
     """
     Run k-means n times in parallel.
 
@@ -126,7 +126,7 @@ def nk_means_pp(path_to_graph, data, k, n=10, n_jobs=8, num_iters=300, tol=1e-4)
     pool = Pool(n_jobs)
     # Parallelize across n processes for faster multi-threaded computing
     for i in range(n):
-        pool.apply_async(random_k_means_pp, (q, i, path_to_graph, data, k, num_iters, tol))
+        pool.apply_async(random_k_means_pp, (q, i, path_to_graph, data, k, num_iters, tol, seed))
 
     # Prevent more tasks from being added
     pool.close()
@@ -136,12 +136,12 @@ def nk_means_pp(path_to_graph, data, k, n=10, n_jobs=8, num_iters=300, tol=1e-4)
 
     # Get best result
     best = min(q, key=lambda t: t[0])
-    _, _, seed, best_clusters = best
+    _, _, s, best_clusters = best
     print("Best output: " + str(best))
-    return best_clusters, seed
+    return best_clusters, s
 
 
-def random_k_means_pp(q, i, path_to_graph, data, k, num_iters=300, tol=1e-4):
+def random_k_means_pp(q, i, path_to_graph, data, k, num_iters=300, tol=1e-4, seed=None):
     """
     Helper method for running k-means in parallel.
 
@@ -155,12 +155,16 @@ def random_k_means_pp(q, i, path_to_graph, data, k, num_iters=300, tol=1e-4):
     :param tol: max error of kmeans
     :return:
     """
-    np.random.seed()
-    seed = np.random.randint(1000000)
-    old_centroids, clusters = k_means_pp(data, k, random_seed=seed, num_iters=num_iters, tol=tol)
+
+    if not seed:
+        np.random.seed()
+        s = np.random.randint(100000000)
+    else:
+        s = seed
+    old_centroids, clusters = k_means_pp(data, k, random_seed=s, num_iters=num_iters, tol=tol)
     value = calculate_objective_function(path_to_graph, clusters)
-    print("Process %s finished with competition value %.2f with seed %s" % (i, value, seed))
-    q.append((value, i, seed, clusters))
+    print("Process %s finished with competition value %.2f with seed %s" % (i, value, s))
+    q.append((value, i, s, clusters))
 
 
 def k_means_pp(data, k, random_seed=1, num_iters=300, tol=1e-4, debug=False):

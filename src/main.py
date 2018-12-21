@@ -73,7 +73,7 @@ if __name__ == "__main__":
         if n_args is 2:
             e_mode = 'eigsh'
             n = 10
-            n_jobs = 8
+            n_jobs = 4
         if n_args is 5:
             e_mode = str(sys.argv[3])
             n = int(sys.argv[4])
@@ -95,6 +95,6 @@ if __name__ == "__main__":
             sys.exit()
 
     else:
-        run_all(test_files, ALGORITHM_3, 'eigsh', n=30, n_jobs=10)
-        # run_all(ptest_files, ALGORITHM_4, 'eigsh', n=10, n_jobs=10)
+        # run_all(test_files, ALGORITHM_3, 'eigsh', n=100, n_jobs=10)
+        run_all(ptest_files, ALGORITHM_1, 'eigsh', n=1, n_jobs=10)
         # run_all(comp_files, ALGORITHM_1, 'eigsh', n=10, n_jobs=10)

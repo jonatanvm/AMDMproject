@@ -3,7 +3,7 @@ import numpy as np
 
 def select_centroids(data, k, random_seed=1):
     """
-    Select inital centroid at random.
+    Select inital centroids at random.
     :param data: data.
     :param k: number of clusters.
     :param random_seed: random seed to be able to reproduce results.
@@ -11,11 +11,13 @@ def select_centroids(data, k, random_seed=1):
     """
     np.random.seed(seed=random_seed)
 
-    centroids = np.zeros((k, data.shape[1]))
-    for i in range(data.shape[1]):
-        centroids[:, i] = np.random.uniform(np.min(data[:, i]), np.max(data[:, i]), size=k)
-
-    return centroids
+    indices = np.arange(data.shape[0])
+    centroids = []
+    for i in range(k):
+        choice = np.random.choice(indices)
+        centroids.append(data[choice])
+        np.delete(indices, choice)
+    return np.array(centroids)
 
 
 def assign_points(data, centroids):
@@ -38,16 +40,14 @@ def move_centroids(data, old_centroids, clusters):
     :return: new centroids as well as boolean indicating whether all clusters have at least one point.
     """
     new_centroids = np.zeros(shape=old_centroids.shape)
-    all_assigned = True
     for c in range(old_centroids.shape[0]):
         d = [d for i, d in enumerate(data) if clusters[i] == c]
         if d:
             new_centroids[c] = np.array([np.mean([d for i, d in enumerate(data) if clusters[i] == c], axis=0)])
         else:
-            all_assigned = False
             new_centroids[c] = old_centroids[c]
 
-    return new_centroids, all_assigned
+    return new_centroids
 
 
 def k_means(data, k, random_seed=1, num_iters=10):
@@ -62,13 +62,11 @@ def k_means(data, k, random_seed=1, num_iters=10):
 
     centroids = select_centroids(data, k, random_seed)
 
-    ass = True
     i = 0
-    while i < num_iters and ass:
+    while i < num_iters:
         clusters = assign_points(data, centroids)
 
-        centroids, assigned = move_centroids(data, centroids, clusters)
-        ass = assigned
+        centroids = move_centroids(data, centroids, clusters)
         i += 1
 
     return centroids, clusters
