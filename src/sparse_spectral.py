@@ -43,7 +43,7 @@ def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh'):
     clusters_lables, seed = nk_means_pp(graph_src, U, k)
     print("Finished after %.2f seconds" % (time() - start))
     print(clusters_lables)
-    return clusters_lables, seed
+    return clusters_lables, seed, header
 
 
 def custom_sparse_spectral_clustering2(graph_src, k_user=None, e_mode='eigsh'):
@@ -85,4 +85,4 @@ def custom_sparse_spectral_clustering2(graph_src, k_user=None, e_mode='eigsh'):
     clusters_lables, seed = nk_means_pp(graph_src, U, k, n=10)
     print("Finished after %.2f seconds" % (time() - start))
     print(clusters_lables)
-    return clusters_lables, seed
+    return clusters_lables, seed, header

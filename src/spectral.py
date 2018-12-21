@@ -57,7 +57,7 @@ def spectral_clustering1(graph_src, k_user=None):
     for i in clusters:
         cluster_sizes[i] += 1
     print("Cluster sizes: %s" % cluster_sizes)
-    return clusters, seed
+    return clusters, seed, header
 
 
 def spectral_clustering2(graph_src, k_user=None):
@@ -101,7 +101,7 @@ def spectral_clustering2(graph_src, k_user=None):
     for i in clusters:
         cluster_sizes[i] += 1
     print("Cluster sizes: %s" % cluster_sizes)
-    return clusters, seed
+    return clusters, seed, header
 
 
 def spectral_clustering3(graph_src, k_user=None):

@@ -11,16 +11,29 @@ MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 ROOT_PATH = os.path.dirname(MODULE_PATH)
 
 
-def output(name, values):
+def output(name, values, header):
     """
     Output the cluster labels to a file <name>.output
     :param name: of file
     :param values: cluster labels
+    :param header: header for file
     :return: path to file.
     """
     df = pd.DataFrame(values)
     output_path = ROOT_PATH + '/output/' + name + '.output'
     df.to_csv(output_path, index=True, header=False, sep=" ")
+
+    #Add header
+    header = ' '.join(header)
+    with open(output_path, 'r+') as f:
+        file = f.read()
+        print("file = ",file)
+        f.seek(0)
+        f.truncate()
+        f.write(header)
+        f.write(file)
+        f.close()
+
     return output_path
 
 
@@ -30,16 +43,16 @@ def run_all(files, algorithm, out=True):
             cluster_labels = None
             path = ROOT_PATH + '/graphs/' + file_name
             if algorithm == ALGORITHM_1:
-                cluster_labels, seed = spectral_clustering1(path)
+                cluster_labels, seed, header = spectral_clustering1(path)
             elif algorithm == ALGORITHM_2:
-                cluster_labels, seed = spectral_clustering2(path)
+                cluster_labels, seed, header = spectral_clustering2(path)
             elif algorithm == ALGORITHM_3:
-                cluster_labels, seed = custom_sparse_spectral_clustering1(path, e_mode='eigsh')
+                cluster_labels, seed, header = custom_sparse_spectral_clustering1(path, e_mode='eigsh')
             elif algorithm == ALGORITHM_4:
-                cluster_labels, seed = custom_sparse_spectral_clustering2(path, e_mode='lobpcg')
+                cluster_labels, seed, header = custom_sparse_spectral_clustering2(path, e_mode='lobpcg')
 
             if out and cluster_labels.any():
-                output(file_name.split(".")[0] + "-" + str(seed), cluster_labels)
+                output(file_name.split(".")[0] + "-" + str(seed), cluster_labels, header)
                 value = calculate_objective_function(path, cluster_labels)
                 print("Competition value: %s" % value)
             print("Finished with %s \n" % file_name)
@@ -69,6 +82,6 @@ if __name__ == "__main__":
             sys.exit()
 
     else:
-        # run_all(test_files, ALGORITHM_7, True)
-        run_all(ptest_files, ALGORITHM_4, True)
-        # run_all(comp_files, ALGORITHM_4, True)
+        # run_all(test_files, ALGORITHM_1, True)
+        run_all(ptest_files, ALGORITHM_1, True)
+        # run_all(comp_files, ALGORITHM_1, True)
