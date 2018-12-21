@@ -2,9 +2,13 @@ import numpy as np
 
 
 def select_centroids(data, k, random_seed=1):
-    # INPUT: N x d data array, k number of clusters.
-    # OUTPUT: k x d array of k randomly assigned mean vectors with d dimensions.
-
+    """
+    Select inital centroid at random.
+    :param data: data.
+    :param k: number of clusters.
+    :param random_seed: random seed to be able to reproduce results.
+    :return: centroids
+    """
     np.random.seed(seed=random_seed)
 
     centroids = np.zeros((k, data.shape[1]))
@@ -15,14 +19,24 @@ def select_centroids(data, k, random_seed=1):
 
 
 def assign_points(data, centroids):
-    # INPUT: N x d data array, k x d centroids array.
-    # OUTPUT: N x 1 array of cluster assignments in {0,...,k-1}.
-
+    """
+    Assign points to clusters.
+    :param data: data.
+    :param centroids: current centroids
+    :return: new clusters.
+    """
     clusters = np.array([np.argmin(np.linalg.norm(d - centroids, axis=1)) for d in data], dtype=np.int32)
     return clusters
 
 
 def move_centroids(data, old_centroids, clusters):
+    """
+    Move centroids to cluster means.
+    :param data: data
+    :param old_centroids: old centroids.
+    :param clusters: current centroids
+    :return: new centroids as well as boolean indicating whether all clusters have at least one point.
+    """
     new_centroids = np.zeros(shape=old_centroids.shape)
     all_assigned = True
     for c in range(old_centroids.shape[0]):
@@ -36,9 +50,15 @@ def move_centroids(data, old_centroids, clusters):
     return new_centroids, all_assigned
 
 
-def k_means(data, k, random_seed=1, num_iters=10, plot=True):
-    # INPUT: N x d data array, k number of clusters, number of iterations, boolean plot.
-    # OUTPUT: N x 1 array of cluster assignments.
+def k_means(data, k, random_seed=1, num_iters=10):
+    """
+    Run k-means for num_iters iterations.
+    :param data: data to be clustered.
+    :param k: number of clusters.
+    :param random_seed: random seed to be able to reproduce results.
+    :param num_iters: number of iterations in k-means
+    :return:
+    """
 
     centroids = select_centroids(data, k, random_seed)
 
@@ -52,6 +72,3 @@ def k_means(data, k, random_seed=1, num_iters=10, plot=True):
         i += 1
 
     return centroids, clusters
-
-# centroids, clusters = k_means(data, 2, plot=False)
-# print("The final cluster mean values are:", centroids)
