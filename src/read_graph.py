@@ -21,7 +21,6 @@ def read_graph_sparse(file_path, return_D=False):
         except ValueError:
             _, name, nVertices, nEdges, k = line
         header = ['#', str(name), str(nVertices), str(nEdges), str(k)]
-        print(header)
         row = np.zeros(int(nEdges) * 2 + int(nVertices))  # slower than empty
         col = np.zeros(int(nEdges) * 2 + int(nVertices))
         data = np.zeros(int(nEdges) * 2 + int(nVertices))

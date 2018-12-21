@@ -21,7 +21,6 @@ def custom_sparse_spectral_clustering1(graph_src, k_user=None, e_mode='eigsh'):
     if k_user or k is None:
         k = k_user
         header[4] = str(k_user)
-    print("Header: %s" % " ".join(header))
     print("Finished after %.2f seconds" % (time() - start))
 
     # Generalized Eigen-decomposition of Laplacian matrix
@@ -60,7 +59,6 @@ def custom_sparse_spectral_clustering2(graph_src, k_user=None, e_mode='eigsh'):
     if k_user or k is None:
         k = k_user
         header[4] = str(k_user)
-    print("Header: %s" % " ".join(header))
     print("Finished after %.2f seconds" % (time() - start))
 
     # Generalized Eigen-decomposition of Laplacian matrix

@@ -19,20 +19,19 @@ def output(name, values, header):
     :param header: header for file
     :return: path to file.
     """
-    df = pd.DataFrame(values)
     output_path = ROOT_PATH + '/output/' + name + '.output'
-    df.to_csv(output_path, index=True, header=False, sep=" ")
 
-    #Add header
+    # Add header
     header = ' '.join(header)
-    with open(output_path, 'r+') as f:
-        file = f.read()
-        print("file = ",file)
-        f.seek(0)
-        f.truncate()
+    if not header[-1] == '\n':
+        header += '\n'
+
+    with open(output_path, 'w') as f:
         f.write(header)
-        f.write(file)
         f.close()
+
+    df = pd.DataFrame(values)
+    df.to_csv(output_path, index=True, header=False, sep=" ", mode='a')
 
     return output_path
 
@@ -82,6 +81,6 @@ if __name__ == "__main__":
             sys.exit()
 
     else:
-        # run_all(test_files, ALGORITHM_1, True)
-        run_all(ptest_files, ALGORITHM_1, True)
+        run_all(test_files, ALGORITHM_4, True)
+        run_all(ptest_files, ALGORITHM_4, True)
         # run_all(comp_files, ALGORITHM_1, True)

@@ -31,7 +31,6 @@ def spectral_clustering1(graph_src, k_user=None):
     if k_user or k is None:
         k = k_user
         header[4] = str(k_user)
-    print("Header: %s" % " ".join(header))
     print("Finished after %.2f seconds" % (time() - start))
 
     # Calculate laplacian matrix
@@ -75,7 +74,6 @@ def spectral_clustering2(graph_src, k_user=None):
         k = k_user
         header[4] = str(k_user)
     print(D)
-    print("Header: %s" % " ".join(header))
     print("Finished after %.2f seconds" % (time() - start))
 
     # Calculate laplacian matrix
